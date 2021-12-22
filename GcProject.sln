@@ -31,7 +31,6 @@ Global
 		{CF9FF9CB-3C8A-4243-9687-F9CF9AC92099}.Release (Legacy)|x86.ActiveCfg = Release (Legacy)|Win32
 		{CF9FF9CB-3C8A-4243-9687-F9CF9AC92099}.Release (Legacy)|x86.Build.0 = Release (Legacy)|Win32
 		{CF9FF9CB-3C8A-4243-9687-F9CF9AC92099}.Release|x86.ActiveCfg = Release|Win32
-		{CF9FF9CB-3C8A-4243-9687-F9CF9AC92099}.Release|x86.Build.0 = Release|Win32
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

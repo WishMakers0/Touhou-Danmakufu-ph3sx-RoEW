@@ -1,4 +1,4 @@
-//Microsoft Developer Studio generated resource script.
+// Microsoft Visual C++ generated resource script.
 //
 #include "resource.h"
 
@@ -7,20 +7,17 @@
 //
 // Generated from the TEXTINCLUDE 2 resource.
 //
-#include <windows.h>
+#include "afxres.h"
 
 /////////////////////////////////////////////////////////////////////////////
 #undef APSTUDIO_READONLY_SYMBOLS
 
 /////////////////////////////////////////////////////////////////////////////
+// English (United States) resources
 
-/*
-#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_JPN)
-#ifdef _WIN32
-LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
-#pragma code_page(932)
-#endif //_WIN32
-*/
+#if !defined(AFX_RESOURCE_DLL) || defined(AFX_TARG_ENU)
+LANGUAGE LANG_ENGLISH, SUBLANG_ENGLISH_US
+#pragma code_page(1252)
 
 #ifdef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////
@@ -28,18 +25,18 @@ LANGUAGE LANG_JAPANESE, SUBLANG_DEFAULT
 // TEXTINCLUDE
 //
 
-1 TEXTINCLUDE DISCARDABLE 
+1 TEXTINCLUDE 
 BEGIN
     "resource.h\0"
 END
 
-2 TEXTINCLUDE DISCARDABLE 
+2 TEXTINCLUDE 
 BEGIN
     "#include ""afxres.h""\r\n"
     "\0"
 END
 
-3 TEXTINCLUDE DISCARDABLE 
+3 TEXTINCLUDE 
 BEGIN
     "\r\n"
     "\0"
@@ -55,39 +52,49 @@ END
 
 // Icon with lowest ID value placed first to ensure application icon
 // remains consistent on all systems.
-
-IDI_ICON                ICON    DISCARDABLE     "th_dnh_sx-z.ico"
-
-/////////////////////////////////////////////////////////////////////////////
+IDI_ICON                ICON                    "temp_icon.ico"
 
 
 /////////////////////////////////////////////////////////////////////////////
-// Fancy Shit
+//
+// Version
+//
 
 VS_VERSION_INFO VERSIONINFO
-FILEVERSION       1, 3, 1, 0
-PRODUCTVERSION    1, 3, 1, 0
-{
+ FILEVERSION 1,3,1,0
+ PRODUCTVERSION 1,3,1,0
+ FILEFLAGSMASK 0x0L
+#ifdef _DEBUG
+ FILEFLAGS 0x1L
+#else
+ FILEFLAGS 0x0L
+#endif
+ FILEOS 0x0L
+ FILETYPE 0x0L
+ FILESUBTYPE 0x0L
+BEGIN
     BLOCK "StringFileInfo"
-    {
+    BEGIN
         BLOCK "040904b0"
-        {
-            VALUE "CompanyName",        "DOGSDAY\0"
-			VALUE "FileDescription", 	"Touhou Danmakufu ph3sx-zlabel\0"
-			VALUE "FileVersion",     	"1.31a"
-            VALUE "ProductName",        "Touhou Danmakufu ph3sx-zlabel\0"
-            VALUE "ProductVersion",     "1.31a\0"
-        }
-    }
+        BEGIN
+            VALUE "CompanyName", "Analogue Reverie"
+            VALUE "FileDescription", "??????? the Return of Eastern Wonderland"
+            VALUE "FileVersion", "1.00"
+            VALUE "InternalName", "RoEW"
+            VALUE "ProductName", "Touhou Danmakufu ph3sx-zlabel"
+            VALUE "ProductVersion", "1.31a"
+        END
+    END
     BLOCK "VarFileInfo"
-    {
+    BEGIN
         VALUE "Translation", 0x409, 1200
-    }
-}
+    END
+END
 
+#endif    // English (United States) resources
 /////////////////////////////////////////////////////////////////////////////
 
-//#endif
+
 
 #ifndef APSTUDIO_INVOKED
 /////////////////////////////////////////////////////////////////////////////

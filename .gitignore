@@ -271,6 +271,7 @@ __pycache__/
 /bin_th_dnh/*
 !/bin_ext/FileArchiver_readme.txt
 !/bin_th_dnh/resource/
+!/bin_th_dnh/script/
 !/bin_th_dnh/license.txt
 !/bin_th_dnh/readme.txt
 
@@ -296,3 +297,5 @@ __pycache__/
 
 # code
 /source/GcLib/gstd/ArchiveEncryption.hpp
+
+# resource/script files for DNH work

@@ -23,8 +23,9 @@ DirectGraphicsConfig::DirectGraphicsConfig() {
 	bWindowed_ = true;
 	bBorderlessFullscreen_ = true;
 
-	sizeScreen_ = { 640, 480 };
-	sizeScreenDisplay_ = { 640, 480 };
+	sizeScreen_ = { 1280, 960 }; //640,480
+	sizeScreenDisplay_ = { 1280, 960 };
+	bUseDynamicScaling_ = false;
 
 	colorMode_ = COLOR_MODE_32BIT;
 	typeMultiSample_ = D3DMULTISAMPLE_NONE;
@@ -158,8 +159,8 @@ bool DirectGraphics::Initialize(HWND hWnd, const DirectGraphicsConfig& config) {
 		float coordRateX = dxBackBufferW / (float)config.sizeScreen_.x;
 		float coordRateY = dxBackBufferH / (float)config.sizeScreen_.y;
 
-		//g_dxCoordsMul_ = std::min(coordRateX, coordRateY);
-		g_dxCoordsMul_ = 1.0f;
+		g_dxCoordsMul_ = std::min(coordRateX, coordRateY);
+		//g_dxCoordsMul_ = 1.0f;
 	}
 	*/
 

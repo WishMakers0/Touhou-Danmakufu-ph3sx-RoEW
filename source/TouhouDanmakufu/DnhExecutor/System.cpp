@@ -39,10 +39,14 @@ void SystemController::Reset() {
 	}
 	else {
 		ref_count_ptr<ScriptInformation> info = ScriptInformation::CreateScriptInformation(pathPackageScript, false);
-		if (info == nullptr)
-			ShowErrorDialog(L"ScriptReset: " + ErrorUtility::GetFileNotFoundErrorMessage(pathPackageScript, true));
-		else 
+		if (info == nullptr) {
+			//ShowErrorDialog(L"ScriptReset: " + ErrorUtility::GetFileNotFoundErrorMessage(pathPackageScript, true));
+			infoSystem_->UpdateFreePlayerScriptInformationList();
+			sceneManager_->TransTitleScene();
+		}
+		else {
 			sceneManager_->TransPackageScene(info, true);
+		}
 	}
 }
 void SystemController::ClearTaskWithoutSystem() {

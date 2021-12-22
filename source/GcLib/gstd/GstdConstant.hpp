@@ -1,13 +1,15 @@
 #pragma once
 #include "../pch.h"
 
-const std::wstring DNH_EXE_NAME = L"th_dnh_ph3sx-zlabel.exe";
-const std::wstring DNH_VERSION = L"v1.33a-pre";
+constexpr const int STANDARD_FPS = 60;
 
-constexpr const uint64_t _GAME_VERSION_RESERVED = /*e*/621;		//OWO!!!!!
-constexpr const uint64_t _GAME_VERSION_MAJOR = 1;
-constexpr const uint64_t _GAME_VERSION_SUBMAJOR = 3;
-constexpr const uint64_t _GAME_VERSION_MINOR = 3;
+const std::wstring DNH_EXE_NAME = L"th_roew.exe";
+const std::wstring DNH_VERSION = L"v0.01a"; //v.1.32a
+
+constexpr const uint64_t _GAME_VERSION_RESERVED = /*PC*/98;		//OWO!!!!! //naudiz sinned :c i fixed it
+constexpr const uint64_t _GAME_VERSION_MAJOR = 0;
+constexpr const uint64_t _GAME_VERSION_SUBMAJOR = 0;
+constexpr const uint64_t _GAME_VERSION_MINOR = 1;
 constexpr const uint64_t _GAME_VERSION_REVISION = 0;
 
 //00000000 00000000 | 00000000 00000000 | 00000000 00000000 | 00000000 00000000

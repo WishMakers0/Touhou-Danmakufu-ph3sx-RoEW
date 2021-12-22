@@ -420,7 +420,8 @@ DnhConfiguration::DnhConfiguration() {
 	fpsType_ = FPS_NORMAL;
 	fastModeSpeed_ = 20;
 
-	windowSizeIndex_ = 0;
+	windowSizeList_ = { { 1280, 960 } }; //{ { 1280, 960 }, { 960, 720 }, { 800, 600 }, { 640, 480 } };
+	sizeWindow_ = 0;
 
 	bVSync_ = true;
 	bUseRef_ = false;
@@ -428,6 +429,7 @@ DnhConfiguration::DnhConfiguration() {
 	multiSamples_ = D3DMULTISAMPLE_NONE;
 
 	pathExeLaunch_ = DNH_EXE_NAME;
+	//pathPackageScript_ = L"script/RoEW.dnh";
 
 	padIndex_ = 0;
 	mapKey_[EDirectInput::KEY_LEFT] = new VirtualKey(DIK_LEFT, 0, 0);
@@ -450,9 +452,8 @@ DnhConfiguration::DnhConfiguration() {
 	bLogFile_ = false;
 	bMouseVisible_ = true;
 
-	screenWidth_ = 640;
-	screenHeight_ = 480;
-	windowSizeList_ = { { 640, 480 }, { 800, 600 }, { 960, 720 }, { 1280, 960 } };
+	screenWidth_ = 1280;
+	screenHeight_ = 960;
 
 	bEnableUnfocusedProcessing_ = false;
 
@@ -461,7 +462,9 @@ DnhConfiguration::DnhConfiguration() {
 }
 DnhConfiguration::~DnhConfiguration() {}
 
-bool DnhConfiguration::_LoadDefinitionFile() {
+bool DnhConfiguration::_LoadDefinitionFile() { //Who needs def files when you can modify the source to make it do what you want?
+	return false;
+	/*
 	PropertyFile prop;
 	if (!prop.Load(PathProperty::GetModuleDirectory() + L"th_dnh.def")) return false;
 
@@ -531,7 +534,7 @@ bool DnhConfiguration::_LoadDefinitionFile() {
 		}
 	}
 
-	return true;
+	return true;*/
 }
 
 bool DnhConfiguration::LoadConfigFile() {
