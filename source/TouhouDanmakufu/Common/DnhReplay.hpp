@@ -15,6 +15,7 @@ public:
 		INDEX_DIGIT_MAX = 99,
 		INDEX_USER = 100,
 	};
+	//INDEX_ACTIVE makes this so fucking annoying, you have to use an index of "0" now a
 
 	class StageData;
 private:
@@ -25,6 +26,7 @@ private:
 
 	std::wstring comment_;
 	std::wstring userName_;
+	std::wstring fileName_; //added for custom replay file names
 	int64_t totalScore_;
 	double fpsAverage_;
 	SYSTEMTIME date_;
@@ -46,7 +48,7 @@ public:
 	std::wstring& GetComment() { return comment_; }
 	void SetComment(const std::wstring& comment) { comment_ = comment; }
 	std::wstring& GetUserName() { return userName_; }
-	void SetUserName(const std::wstring& name) { userName_ = name; }
+	void SetUserName(const std::wstring& name) { userName_ = name; fileName_ = name; }
 	int64_t GetTotalScore() { return totalScore_; }
 	void SetTotalScore(int64_t score) { totalScore_ = score; }
 	double GetAverageFps() { return fpsAverage_; }
@@ -92,6 +94,7 @@ private:
 	double playerLife_;
 	double playerBombCount_;
 	double playerPower_;
+	//track more information about RoEW's state here?
 	int playerRebirthFrame_;	//Current deathbomb frame
 public:
 	StageData() { recordKey_ = new gstd::RecordBuffer(); scoreStart_ = 0; scoreLast_ = 0; }
@@ -148,12 +151,14 @@ public:
 //*******************************************************************
 class ReplayInformationManager {
 protected:
-	std::map<int, ref_count_ptr<ReplayInformation>> mapInfo_;
+	std::map<std::wstring, ref_count_ptr<ReplayInformation>> mapInfo_;
 public:
 	ReplayInformationManager();
 	virtual ~ReplayInformationManager();
 
 	void UpdateInformationList(std::wstring pathScript);
-	std::vector<int> GetIndexList();
-	ref_count_ptr<ReplayInformation> GetInformation(int index);
+	std::vector<std::wstring> GetIndexList();
+	ref_count_ptr<ReplayInformation> GetInformation(std::wstring index);
+	//std::vector<int> Get!ndexList();
+	//ref_count_ptr<ReplayInformation> GetInformation(int index);
 };

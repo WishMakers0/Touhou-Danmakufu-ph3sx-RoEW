@@ -946,12 +946,13 @@ gstd::value StgControlScript::Func_LoadReplayList(gstd::script_machine* machine,
 
 	return value();
 }
+/*
 gstd::value StgControlScript::Func_GetValidReplayIndices(gstd::script_machine* machine, int argc, const gstd::value* argv) {
 	StgControlScript* script = (StgControlScript*)machine->data;
 	ref_count_ptr<StgControlScriptInformation> infoControlScript = script->systemController_->GetControlScriptInformation();
 	ref_count_ptr<ReplayInformationManager> replayInfoManager = infoControlScript->GetReplayInformationManager();
 
-	std::vector<int> listValidIndices = replayInfoManager->GetIndexList();
+	std::vector<int> listValidIndices = replayInfoManager->Get!ndexList();
 	return script->CreateIntArrayValue(listValidIndices);
 }
 gstd::value StgControlScript::Func_IsValidReplayIndex(gstd::script_machine* machine, int argc, const gstd::value* argv) {
@@ -961,18 +962,35 @@ gstd::value StgControlScript::Func_IsValidReplayIndex(gstd::script_machine* mach
 
 	int index = argv[0].as_int();
 	return script->CreateBooleanValue(replayInfoManager->GetInformation(index) != nullptr);
+}*/
+gstd::value StgControlScript::Func_GetValidReplayIndices(gstd::script_machine* machine, int argc, const gstd::value* argv) { //now returns an array of strings
+	StgControlScript* script = (StgControlScript*)machine->data;
+	ref_count_ptr<StgControlScriptInformation> infoControlScript = script->systemController_->GetControlScriptInformation();
+	ref_count_ptr<ReplayInformationManager> replayInfoManager = infoControlScript->GetReplayInformationManager();
+
+	std::vector<std::wstring> listValidIndices = replayInfoManager->GetIndexList();
+	return script->CreateStringArrayValue(listValidIndices); //CreateIntArrayValue
 }
-gstd::value StgControlScript::Func_GetReplayInfo(gstd::script_machine* machine, int argc, const gstd::value* argv) {
+gstd::value StgControlScript::Func_IsValidReplayIndex(gstd::script_machine* machine, int argc, const gstd::value* argv) { //now checks for a string, not an int
+	StgControlScript* script = (StgControlScript*)machine->data;
+	ref_count_ptr<StgControlScriptInformation> infoControlScript = script->systemController_->GetControlScriptInformation();
+	ref_count_ptr<ReplayInformationManager> replayInfoManager = infoControlScript->GetReplayInformationManager();
+
+	std::wstring index = argv[0].as_string();
+	return script->CreateBooleanValue(replayInfoManager->GetInformation(index) != nullptr);
+}
+//as_string();
+gstd::value StgControlScript::Func_GetReplayInfo(gstd::script_machine* machine, int argc, const gstd::value* argv) { //first argument now a string
 	StgControlScript* script = (StgControlScript*)machine->data;
 	ref_count_ptr<StgControlScriptInformation> infoControlScript = script->systemController_->GetControlScriptInformation();
 	ref_count_ptr<ReplayInformationManager> replayInfoManager = infoControlScript->GetReplayInformationManager();
 	ref_count_ptr<StgSystemInformation> infoSystem = script->systemController_->GetSystemInformation();
 
-	int index = argv[0].as_int();
+	std::wstring index = argv[0].as_string();
 	int type = argv[1].as_int();
 
 	ref_count_ptr<ReplayInformation> replayInfo;
-	if (index == ReplayInformation::INDEX_ACTIVE) replayInfo = infoSystem->GetActiveReplayInformation();
+	if (StringUtility::ToInteger(index) == ReplayInformation::INDEX_ACTIVE) replayInfo = infoSystem->GetActiveReplayInformation();
 	else replayInfo = replayInfoManager->GetInformation(index);
 
 	if (replayInfo == nullptr)
@@ -1050,17 +1068,17 @@ gstd::value StgControlScript::Func_SetReplayInfo(gstd::script_machine* machine, 
 
 	return value();
 }
-gstd::value StgControlScript::Func_GetReplayUserData(gstd::script_machine* machine, int argc, const gstd::value* argv) {
+gstd::value StgControlScript::Func_GetReplayUserData(gstd::script_machine* machine, int argc, const gstd::value* argv) { //argument now a string
 	StgControlScript* script = (StgControlScript*)machine->data;
 	ref_count_ptr<StgControlScriptInformation> infoControlScript = script->systemController_->GetControlScriptInformation();
 	ref_count_ptr<ReplayInformationManager> replayInfoManager = infoControlScript->GetReplayInformationManager();
 	ref_count_ptr<StgSystemInformation> infoSystem = script->systemController_->GetSystemInformation();
 
-	int index = argv[0].as_int();
+	std::wstring index = argv[0].as_string();
 	std::string key = StringUtility::ConvertWideToMulti(argv[1].as_string());
 
 	ref_count_ptr<ReplayInformation> replayInfo;
-	if (index == ReplayInformation::INDEX_ACTIVE) replayInfo = infoSystem->GetActiveReplayInformation();
+	if (StringUtility::ToInteger(index) == ReplayInformation::INDEX_ACTIVE) replayInfo = infoSystem->GetActiveReplayInformation();
 	else replayInfo = replayInfoManager->GetInformation(index);
 
 	if (replayInfo == nullptr)
@@ -1089,11 +1107,11 @@ gstd::value StgControlScript::Func_IsReplayUserDataExists(gstd::script_machine* 
 	ref_count_ptr<ReplayInformationManager> replayInfoManager = infoControlScript->GetReplayInformationManager();
 	ref_count_ptr<StgSystemInformation> infoSystem = script->systemController_->GetSystemInformation();
 
-	int index = argv[0].as_int();
+	std::wstring index = argv[0].as_string();
 	std::string key = StringUtility::ConvertWideToMulti(argv[1].as_string());
 
 	ref_count_ptr<ReplayInformation> replayInfo;
-	if (index == ReplayInformation::INDEX_ACTIVE) replayInfo = infoSystem->GetActiveReplayInformation();
+	if (StringUtility::ToInteger(index) == ReplayInformation::INDEX_ACTIVE) replayInfo = infoSystem->GetActiveReplayInformation();
 	else replayInfo = replayInfoManager->GetInformation(index);
 
 	if (replayInfo == nullptr)

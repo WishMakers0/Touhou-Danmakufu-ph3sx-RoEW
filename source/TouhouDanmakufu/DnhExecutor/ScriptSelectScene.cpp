@@ -619,14 +619,14 @@ PlayTypeSelectScene::PlayTypeSelectScene(ref_count_ptr<ScriptInformation> info) 
 		const std::wstring& pathScript = info->pathScript_;
 		replayInfoManager_ = new ReplayInformationManager();
 		replayInfoManager_->UpdateInformationList(pathScript);
-		std::vector<int> listReplayIndex = replayInfoManager_->GetIndexList();
+		std::vector<std::wstring> listReplayIndex = replayInfoManager_->GetIndexList();
 		for (int iList = 0; iList < listReplayIndex.size(); iList++) {
-			int index = listReplayIndex[iList];
+			std::wstring index = listReplayIndex[iList];
 			ref_count_ptr<ReplayInformation> replay = replayInfoManager_->GetInformation(index);
 			int itemY = 256 + (itemCount % pageMaxY_) * 20;
 
-			std::wstring text = StringUtility::Format(L"No.%02d %-8s %012I64d %-8s (%2.2ffps) <%s>",
-				index,
+			std::wstring text = StringUtility::Format(L"%-8s.rpy %-8s %012I64d %-8s (%2.2ffps) <%s>", //Format(L"No.%02d %-8s %012I64d %-8s (%2.2ffps) <%s>",
+				index.c_str(),
 				replay->GetUserName().c_str(),
 				replay->GetTotalScore(),
 				replay->GetPlayerScriptReplayName().c_str(),
@@ -672,8 +672,8 @@ void PlayTypeSelectScene::Work() {
 			}
 			else {
 				//リプレイ
-				std::vector<int> listReplayIndex = replayInfoManager_->GetIndexList();
-				int replayIndex = listReplayIndex[indexSelect - 1];
+				std::vector<std::wstring> listReplayIndex = replayInfoManager_->GetIndexList(); //lots of ints
+				std::wstring replayIndex = listReplayIndex[indexSelect - 1];
 				ref_count_ptr<ReplayInformation> replay = replayInfoManager_->GetInformation(replayIndex);
 
 				SceneManager* sceneManager = SystemController::GetInstance()->GetSceneManager();

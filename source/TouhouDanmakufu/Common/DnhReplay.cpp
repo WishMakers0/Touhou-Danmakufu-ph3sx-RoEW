@@ -44,7 +44,8 @@ bool ReplayInformation::IsUserDataExists(const std::string& key) {
 bool ReplayInformation::SaveToFile(const std::wstring& scriptPath, int index) {
 	std::wstring dir = EPathProperty::GetReplaySaveDirectory(scriptPath);
 	std::wstring scriptName = PathProperty::GetFileNameWithoutExtension(scriptPath);
-	std::wstring path = dir + scriptName + StringUtility::Format(L"_replay%02d.dat", index);
+	std::wstring path = dir + fileName_ + StringUtility::Format(L".rpy", index);
+	//std::wstring path = dir + scriptName + StringUtility::Format(L"_replay%02d.dat", index); //NOOOOOOOO ok time to undo
 
 	//フォルダ作成
 	File::CreateFileDirectory(dir);
@@ -314,7 +315,8 @@ void ReplayInformationManager::UpdateInformationList(std::wstring pathScript) {
 	mapInfo_.clear();
 
 	std::wstring scriptName = PathProperty::GetFileNameWithoutExtension(pathScript);
-	std::wstring fileNameHead = scriptName + L"_replay";
+	//std::wstring fileNameHead = scriptName + L"_replay";
+	std::wstring fileNameHead = L".rpy"; //not a header, a footer, but close enough
 	std::wstring dir = EPathProperty::GetReplaySaveDirectory(pathScript);
 	std::vector<std::wstring> listPath = File::GetFilePathList(dir);
 
@@ -328,7 +330,7 @@ void ReplayInformationManager::UpdateInformationList(std::wstring pathScript) {
 
 		ref_count_ptr<ReplayInformation> info = ReplayInformation::CreateFromFile(pathScript, fileName);
 		if (info == nullptr) continue;
-
+		/*
 		std::wstring strKey = fileName.substr(fileNameHead.size());
 		strKey = PathProperty::GetFileNameWithoutExtension(strKey);
 
@@ -340,21 +342,21 @@ void ReplayInformationManager::UpdateInformationList(std::wstring pathScript) {
 			index = indexFree;
 			indexFree++;
 			strKey = StringUtility::Format(L"%d", index);
-		}
+		}*/
 
-		int key = StringUtility::ToInteger(strKey);
+		std::wstring key = fileName.substr(0,fileName.size() - fileNameHead.size()); //StringUtility::ToInteger(strKey);
 		mapInfo_[key] = info;
 	}
 
 }
-std::vector<int> ReplayInformationManager::GetIndexList() {
-	std::vector<int> res;
+std::vector<std::wstring> ReplayInformationManager::GetIndexList() {
+	std::vector<std::wstring> res;
 	for (auto itr = mapInfo_.begin(); itr != mapInfo_.end(); ++itr) {
 		res.push_back(itr->first);
 	}
 	return res;
 }
-ref_count_ptr<ReplayInformation> ReplayInformationManager::GetInformation(int index) {
+ref_count_ptr<ReplayInformation> ReplayInformationManager::GetInformation(std::wstring index) { //int index
 	auto itr = mapInfo_.find(index);
 	if (itr == mapInfo_.end()) return nullptr;
 	return itr->second;
