@@ -572,30 +572,30 @@ static const std::vector<function> stgStageFunction = {
 	{ "ObjCrLaser_AddNode", StgStageScript::Func_ObjCrLaser_AddNode, 5 },
 	{ "ObjCrLaser_AddNode", StgStageScript::Func_ObjCrLaser_AddNode, 6 }, // Overloaded
 
-	{ "ObjPatternShot_Create", StgStageScript::Func_ObjPatternShot_Create, 0 },
-	{ "ObjPatternShot_Fire", StgStageScript::Func_ObjPatternShot_Fire, 1 },
-	{ "ObjPatternShot_FireReturn", StgStageScript::Func_ObjPatternShot_FireReturn, 1 },
-	{ "ObjPatternShot_SetParentObject", StgStageScript::Func_ObjPatternShot_SetParentObject, 2 },
-	{ "ObjPatternShot_SetShotParent", StgStageScript::Func_ObjPatternShot_SetShotParent, 2 },
-	{ "ObjPatternShot_SetAutoDelete", StgStageScript::Func_ObjPatternShot_SetAutoDelete, 2 },
-	{ "ObjPatternShot_SetPatternType", StgStageScript::Func_ObjPatternShot_SetPatternType, 2 },
-	{ "ObjPatternShot_SetShotType", StgStageScript::Func_ObjPatternShot_SetShotType, 2 },
-	{ "ObjPatternShot_SetInitialBlendMode", StgStageScript::Func_ObjPatternShot_SetInitialBlendMode, 2 },
-	{ "ObjPatternShot_SetShotCount", StgStageScript::Func_ObjPatternShot_SetShotCount, 3 },
-	{ "ObjPatternShot_SetSpeed", StgStageScript::Func_ObjPatternShot_SetSpeed, 3 },
-	{ "ObjPatternShot_SetAngle", StgStageScript::Func_ObjPatternShot_SetAngle, 3 },
-	{ "ObjPatternShot_SetExtraData", StgStageScript::Func_ObjPatternShot_SetExtraData, 2 },
-	{ "ObjPatternShot_SetBasePoint", StgStageScript::Func_ObjPatternShot_SetBasePoint, 3 },
-	{ "ObjPatternShot_SetBasePointOffset", StgStageScript::Func_ObjPatternShot_SetBasePointOffset, 3 },
-	{ "ObjPatternShot_SetBasePointOffsetCircle", StgStageScript::Func_ObjPatternShot_SetBasePointOffsetCircle, 3 },
-	{ "ObjPatternShot_SetShootRadius", StgStageScript::Func_ObjPatternShot_SetShootRadius, 2 },
-	{ "ObjPatternShot_SetDelay", StgStageScript::Func_ObjPatternShot_SetDelay, 2 },
+	{ "etCreate", StgStageScript::Func_ObjPatternShot_Create, 0 }, //ObjPatternShot_Create
+	{ "etOn", StgStageScript::Func_ObjPatternShot_Fire, 1 }, //ObjPatternShot_Fire
+	{ "etOnRet", StgStageScript::Func_ObjPatternShot_FireReturn, 1 }, //ObjPatternShot_FireReturn
+	{ "etParent", StgStageScript::Func_ObjPatternShot_SetParentObject, 2 }, //ObjPatternShot_SetParentObject
+	{ "ObjPatternShot_SetShotParent", StgStageScript::Func_ObjPatternShot_SetShotParent, 2 }, //ObjPatternShot_SetShotParent
+	{ "etAutoDelete", StgStageScript::Func_ObjPatternShot_SetAutoDelete, 2 }, //ObjPatternShot_SetAutoDelete
+	{ "etAim", StgStageScript::Func_ObjPatternShot_SetPatternType, 2 }, //ObjPatternShot_SetPatternType
+	{ "etType", StgStageScript::Func_ObjPatternShot_SetShotType, 2 }, //ObjPatternShot_SetShotType
+	{ "etBlend", StgStageScript::Func_ObjPatternShot_SetInitialBlendMode, 2 }, //ObjPatternShot_SetInitialBlendMode
+	{ "etCount", StgStageScript::Func_ObjPatternShot_SetShotCount, 3 }, //ObjPatternShot_SetShotCount
+	{ "etSpeed", StgStageScript::Func_ObjPatternShot_SetSpeed, 3 }, //ObjPatternShot_SetSpeed
+	{ "etAngle", StgStageScript::Func_ObjPatternShot_SetAngle, 3 }, //ObjPatternShot_SetAngle
+	{ "etShaderData", StgStageScript::Func_ObjPatternShot_SetExtraData, 2 }, //ObjPatternShot_SetExtraData
+	{ "etOffsetAbs", StgStageScript::Func_ObjPatternShot_SetBasePoint, 3 }, //ObjPatternShot_SetBasePoint
+	{ "etOffset", StgStageScript::Func_ObjPatternShot_SetBasePointOffset, 3 }, //ObjPatternShot_SetBasePointOffset
+	{ "etOffsetRad", StgStageScript::Func_ObjPatternShot_SetBasePointOffsetCircle, 3 }, //ObjPatternShot_SetBasePointOffsetCircle
+	{ "etDist", StgStageScript::Func_ObjPatternShot_SetShootRadius, 2 }, //ObjPatternShot_SetShootRadius
+	{ "etDelay", StgStageScript::Func_ObjPatternShot_SetDelay, 2 }, //ObjPatternShot_SetDelay
 	//{ "ObjPatternShot_SetDelayMotion", StgStageScript::Func_ObjPatternShot_SetDelayMotion, 2 },
-	{ "ObjPatternShot_SetGraphic", StgStageScript::Func_ObjPatternShot_SetGraphic, 2 },
-	{ "ObjPatternShot_SetLaserParameter", StgStageScript::Func_ObjPatternShot_SetLaserParameter, 3 },
-	{ "ObjPatternShot_CopySettings", StgStageScript::Func_ObjPatternShot_CopySettings, 2 },
-	{ "ObjPatternShot_AddTransform", StgStageScript::Func_ObjPatternShot_AddTransform, -4 },	//2 fixed + ... -> 3 minimum
-	{ "ObjPatternShot_SetTransform", StgStageScript::Func_ObjPatternShot_SetTransform, -5 },	//3 fixed + ... -> 4 minimum
+	{ "etSprite", StgStageScript::Func_ObjPatternShot_SetGraphic, 2 }, //ObjPatternShot_SetGraphic
+	{ "etLaser", StgStageScript::Func_ObjPatternShot_SetLaserParameter, 3 }, //ObjPatternShot_SetLaserParameter
+	{ "etCopy", StgStageScript::Func_ObjPatternShot_CopySettings, 2 }, //ObjPatternShot_CopySettings
+	{ "etEx", StgStageScript::Func_ObjPatternShot_AddTransform, -4 },	//2 fixed + ... -> 3 minimum
+	{ "etExSet", StgStageScript::Func_ObjPatternShot_SetTransform, -5 },	//3 fixed + ... -> 4 minimum
 
 	//STG共通関数：アイテムオブジェクト操作
 	{ "ObjItem_Create", StgStageScript::Func_ObjItem_Create, 1 },
