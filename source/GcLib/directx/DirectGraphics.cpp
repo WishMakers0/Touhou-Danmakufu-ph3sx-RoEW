@@ -25,7 +25,7 @@ DirectGraphicsConfig::DirectGraphicsConfig() {
 
 	sizeScreen_ = { 1280, 960 }; //640,480
 	sizeScreenDisplay_ = { 1280, 960 };
-	bUseDynamicScaling_ = false;
+	//bUseDynamicScaling_ = false;
 
 	colorMode_ = COLOR_MODE_32BIT;
 	typeMultiSample_ = D3DMULTISAMPLE_NONE;

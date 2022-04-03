@@ -421,7 +421,7 @@ DnhConfiguration::DnhConfiguration() {
 	fastModeSpeed_ = 20;
 
 	windowSizeList_ = { { 1280, 960 }, { 960, 720 }, { 800, 600 }, { 640, 480 } }; //{ { 1280, 960 }, { 960, 720 }, { 800, 600 }, { 640, 480 } };
-	sizeWindow_ = 0;
+	windowSizeIndex_ = 0;
 
 	bVSync_ = true;
 	bUseRef_ = false;
