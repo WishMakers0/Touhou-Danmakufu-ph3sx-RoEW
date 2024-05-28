@@ -429,7 +429,9 @@ DnhConfiguration::DnhConfiguration() {
 	multiSamples_ = D3DMULTISAMPLE_NONE;
 
 	pathExeLaunch_ = DNH_EXE_NAME;
-	//pathPackageScript_ = L"script/RoEW.dnh";
+	pathPackageScript_ = L"script/liz/LizPackage.dnh"; //script/package/th_roew.dnh
+	//pathPackageScript_ = PathProperty::GetModuleDirectory() + pathPackageScript_;
+	//pathPackageScript_ = PathProperty::ReplaceYenToSlash(pathPackageScript_);
 
 	padIndex_ = 0;
 	mapKey_[EDirectInput::KEY_LEFT] = new VirtualKey(DIK_LEFT, 0, 0);

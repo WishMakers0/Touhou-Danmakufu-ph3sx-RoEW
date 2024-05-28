@@ -395,7 +395,7 @@ void script_scanner::advance() {
 					ch = next_char();
 				};
 
-				next = token_kind::tk_int;
+				next = token_kind::tk_float; //tk_int
 
 				wchar_t ch2 = peek_next_char(1);
 				if (ch == L'.' && std::iswdigit(ch2)) {

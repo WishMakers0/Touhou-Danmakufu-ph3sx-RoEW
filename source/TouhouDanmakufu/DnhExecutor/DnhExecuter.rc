@@ -81,8 +81,8 @@ BEGIN
             VALUE "FileDescription", "??????? the Return of Eastern Wonderland"
             VALUE "FileVersion", "1.00"
             VALUE "InternalName", "RoEW"
-            VALUE "ProductName", "Touhou Danmakufu ph3sx-zlabel"
-            VALUE "ProductVersion", "1.31a"
+            VALUE "ProductName", "Touhou Danmakufu ph3sx-Wish"
+            VALUE "ProductVersion", "0.01a"
         END
     END
     BLOCK "VarFileInfo"

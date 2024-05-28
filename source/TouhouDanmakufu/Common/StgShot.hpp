@@ -808,6 +808,28 @@ public:
         extra_ = e;
     }
 
+	void SetDelayCloud (ref_unsync_ptr<StgShotObject> objShot) { 
+		//hardcoded for Terra's shot sheet
+		objShot->SetShotDataDelayID(1001); 
+
+		auto SetFunc = [](uint8_t typeLerp, StgShotObject::DelayParameter::lerp_func& target) {
+			if (typeLerp == Math::Lerp::ACCELERATE)
+				target = Math::Lerp::Decelerate<float, float>;
+			else if (typeLerp == Math::Lerp::DECELERATE)
+				target = Math::Lerp::Accelerate<float, float>;
+			else
+				target = Math::Lerp::GetFunc<float, float>((Math::Lerp::Type)typeLerp);
+		};
+
+		StgShotObject::DelayParameter* delay = objShot->GetDelayParameter();
+		delay->type = StgShotObject::DelayParameter::DELAY_LERP;
+		SetFunc(Math::Lerp::LINEAR, delay->scaleLerpFunc);
+		SetFunc(Math::Lerp::LINEAR, delay->alphaLerpFunc);
+
+		delay->alpha = D3DXVECTOR3(1, 0, (float)delay_);
+		delay->scale = D3DXVECTOR3(1, 2, (float)delay_);
+	}
+
 	void SetDelay(int delay) { delay_ = delay; }
 	//void SetDelayMotion(bool b) { delayMove_ = b; }
 	void SetLaserArgument(int width, int length) {

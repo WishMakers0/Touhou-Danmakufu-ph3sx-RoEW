@@ -263,6 +263,8 @@ static const std::vector<function> dxFunction = {
 	{ "Obj_SetValueI", DxScript::Func_Obj_SetValueI, 3 },
 	{ "Obj_DeleteValueI", DxScript::Func_Obj_DeleteValueI, 2 },
 	{ "Obj_IsValueExistsI", DxScript::Func_Obj_IsValueExistsI, 2 },
+	{ "Obj_GetValueCount", DxScript::Func_Obj_GetValueCount, 1 },
+	{ "Obj_GetValueCountI", DxScript::Func_Obj_GetValueCountI, 1 },
 
 	{ "Obj_CopyValueTable", DxScript::Func_Obj_CopyValueTable, 3 },
 	{ "Obj_GetExistFrame", DxScript::Func_Obj_GetExistFrame, 1 },

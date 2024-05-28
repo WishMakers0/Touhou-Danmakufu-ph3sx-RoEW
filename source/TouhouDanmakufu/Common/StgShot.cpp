@@ -3049,6 +3049,7 @@ void StgPatternShotObjectGenerator::FireSet(void* scriptData, StgStageController
 		objShot->SetDirectionAngle(_sa);
 		objShot->SetShotDataID(idShotData_);
 		objShot->SetDelay(delay_);
+		SetDelayCloud(objShot);
 		objShot->SetOwnerType(typeOwner_);
 
 		objShot->SetTransformList(transformAsList);

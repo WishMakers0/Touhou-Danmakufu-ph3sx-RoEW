@@ -34,15 +34,17 @@ void SystemController::Reset() {
 	DnhConfiguration* config = DnhConfiguration::CreateInstance();
 	const std::wstring& pathPackageScript = config->pathPackageScript_;
 	if (pathPackageScript.size() == 0) {
-		infoSystem_->UpdateFreePlayerScriptInformationList();
-		sceneManager_->TransTitleScene();
+		//infoSystem_->UpdateFreePlayerScriptInformationList();
+		//sceneManager_->TransTitleScene();
+		EApplication::GetInstance()->End();
 	}
 	else {
 		ref_count_ptr<ScriptInformation> info = ScriptInformation::CreateScriptInformation(pathPackageScript, false);
 		if (info == nullptr) {
-			//ShowErrorDialog(L"ScriptReset: " + ErrorUtility::GetFileNotFoundErrorMessage(pathPackageScript, true));
-			infoSystem_->UpdateFreePlayerScriptInformationList();
-			sceneManager_->TransTitleScene();
+			ShowErrorDialog(L"ScriptReset: " + ErrorUtility::GetFileNotFoundErrorMessage(pathPackageScript, true));
+			//infoSystem_->UpdateFreePlayerScriptInformationList();
+			//sceneManager_->TransTitleScene();
+			EApplication::GetInstance()->End();
 		}
 		else {
 			sceneManager_->TransPackageScene(info, true);
@@ -296,7 +298,8 @@ void SceneManager::TransPackageScene(ref_count_ptr<ScriptInformation> infoMain, 
 			system->GetSceneManager()->TransScriptSelectScene_Last();
 		}
 		else {
-			EApplication::GetInstance()->End();
+			system->Reset();
+			//EApplication::GetInstance()->End();
 		}
 
 		//EFileManager::GetInstance()->ClearArchiveFileCache();
