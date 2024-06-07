@@ -429,7 +429,7 @@ DnhConfiguration::DnhConfiguration() {
 	multiSamples_ = D3DMULTISAMPLE_NONE;
 
 	pathExeLaunch_ = DNH_EXE_NAME;
-	pathPackageScript_ = L"script/liz/LizPackage.dnh"; //script/package/th_roew.dnh
+	pathPackageScript_ = L"script/package/th_roew.dnh"; //script/package/th_roew.dnh //liz/LizPackage
 	//pathPackageScript_ = PathProperty::GetModuleDirectory() + pathPackageScript_;
 	//pathPackageScript_ = PathProperty::ReplaceYenToSlash(pathPackageScript_);
 
