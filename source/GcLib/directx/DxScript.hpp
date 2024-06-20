@@ -6,6 +6,7 @@
 
 #include "DxConstant.hpp"
 #include "DxObject.hpp"
+#include "../RoEW/DxObjectRoEW.hpp"
 
 namespace directx {
 	//****************************************************************************
@@ -247,6 +248,11 @@ namespace directx {
 
 		//Other stuff
 		DNH_FUNCAPI_DECL_(Func_SetInvalidPositionReturn);
+
+		// *****************
+		// RoEW SPECIFIC FUNCTIONS!
+		// *****************
+		static gstd::value Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);
 
 		//Dx関数：オブジェクト操作(共通)
 		static gstd::value Func_Obj_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);

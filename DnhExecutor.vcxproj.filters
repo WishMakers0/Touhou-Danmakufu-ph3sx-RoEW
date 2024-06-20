@@ -30,6 +30,9 @@
     <Filter Include="source\GcLib\directx\Mesh">
       <UniqueIdentifier>{e73259af-d068-459b-8c48-0927a38e30fc}</UniqueIdentifier>
     </Filter>
+    <Filter Include="source\GcLib\RoEW">
+      <UniqueIdentifier>{6f5ba2d7-db09-4ed8-8012-1d694f979cf3}</UniqueIdentifier>
+    </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="source\GcLib\gstd\Application.cpp">
@@ -208,6 +211,9 @@
     </ClCompile>
     <ClCompile Include="source\GcLib\directx\DxUtilityIntersection.cpp">
       <Filter>source\GcLib\directx</Filter>
+    </ClCompile>
+    <ClCompile Include="source\GcLib\RoEW\DxObjectRoEW.cpp">
+      <Filter>source\GcLib\RoEW</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -423,6 +429,9 @@
     </ClInclude>
     <ClInclude Include="source\GcLib\gstd\GstdConstant.hpp">
       <Filter>source\GcLib\gstd</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GcLib\RoEW\DxObjectRoEW.hpp">
+      <Filter>source\GcLib\RoEW</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

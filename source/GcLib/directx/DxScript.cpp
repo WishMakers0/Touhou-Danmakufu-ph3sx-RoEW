@@ -236,6 +236,9 @@ static const std::vector<function> dxFunction = {
 	//Other stuff
 	{ "SetInvalidPositionReturn", DxScript::Func_SetInvalidPositionReturn, 2 },
 
+	// RoEW specific stuff!!
+	{ "ObjMenu_Create", DxScript::Func_ObjMenu_Create, 0 },
+
 	//Base object functions
 	{ "Obj_Create", DxScript::Func_Obj_Create, 0 },
 	{ "Obj_Delete", DxScript::Func_Obj_Delete, 1 },
@@ -2452,6 +2455,17 @@ value DxScript::Func_SetInvalidPositionReturn(script_machine* machine, int argc,
 	DxScript::g_posInvalidY_ = argv[1].as_float();
 	//DxScript::g_posInvalidZ_ = argv[2].as_float();
 	return value();
+}
+
+// RoEW specific functions!!
+
+value DxScript::Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	ref_unsync_ptr<DxMenuObject> obj = new DxMenuObject();
+	int id = script->AddObject(obj);
+	return script->CreateIntValue(id);
 }
 
 //Dx関数：オブジェクト操作(共通)
