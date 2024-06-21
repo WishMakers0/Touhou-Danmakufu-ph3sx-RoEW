@@ -13,6 +13,7 @@ namespace directx {
 
 	class DxMenuObject : public DxScriptObjectBase {
 		friend DxScript;
+		friend DxMenuObjectManager; 
 
 		protected:
 			//gstd::script_block* func_store = nullptr;
@@ -20,16 +21,27 @@ namespace directx {
 			//gstd::script_machine* machine;
 			//gstd::value idObjectValue_;
 			// Rest in peace, the Jank-o-tron 9000.  We hardly knew ye.
-
 			struct flag_bitfield {
-				bool disable		: 1;
-				bool error			: 1;
-				bool close			: 1;
-				bool verify			: 1;
-				bool popup			: 1;
-				bool canAct			: 1;
-				bool rotate			: 1;
-				unsigned remainder 	: 1;
+				bool disable : 1;
+				bool error : 1;
+				bool close : 1;
+				bool verify : 1;
+				bool popup : 1;
+				bool canAct : 1;
+				bool rotate : 1;
+				bool actionT : 1;
+			};
+			// actionT - action trigger
+			// if a menu option was selected
+			struct input_bitfield {
+				bool left : 1;
+				bool right : 1;
+				bool up : 1;
+				bool down : 1;
+				bool shot : 1;
+				bool bomb : 1;
+				bool user1 : 1;
+				bool user2 : 1;
 			};
 			// This syntax for flag storage is actually absurdly helpful.
 			// Vastly prefer it to normal bitfields with bitwise arithmetic...
@@ -52,9 +64,19 @@ namespace directx {
 			std::map<unsigned int, float> sliderValue;
 			std::map<unsigned int, int> sliderMin;
 			std::map<unsigned int, int> sliderMax;
+			std::map<unsigned int, float> sliderIncr;
 			std::vector<t_option> optionType;
 			std::map<int16_t, int> buttonTimer;
-			int16_t lastKey;
+			static input_bitfield lastKey;
+			std::wstring keyboardInput;
+
+			const static int buttonDelay = 30;
+			const static int scrollInterval = 10;
+			const static int scrollInterval_slider = 3;
+
+			void ProcessMenuInputs();
+			void OptionHandler_Keyboard();
+			void OptionHandler();
 
 		public:
 			DxMenuObject();
@@ -71,7 +93,9 @@ namespace directx {
 			float GetSliderValue(int index) { return sliderValue[index]; }
 			int GetSliderMin(int index) { return sliderMin[index]; }
 			int GetSliderMax(int index) { return sliderMax[index]; }
+			float GetSliderIncr(int index) { return sliderIncr[index]; }
 			int GetOptionType(int index) { return (int)optionType[index]; }
+			int GetActionFlag() { return flags.actionT; }
 
 			void SetParent(DxScriptObjectBase* _p) { parent = _p; }
 			void AddRelatedObject(DxScriptObjectBase* _obj) { 
@@ -86,6 +110,7 @@ namespace directx {
 			void SetSliderValue(unsigned int index, float f) { sliderValue[index] = f; }
 			void SetSliderMax(unsigned int index, int val) { sliderMax[index] = val; }
 			void SetSliderMin(unsigned int index, int val) { sliderMin[index] = val; }
+			void SetSliderIncr(unsigned int index, float f) { sliderIncr[index] = f; }
 
 	};
 
