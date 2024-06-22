@@ -22,6 +22,10 @@ DxMenuObject::DxMenuObject() {
 	buttonTimer.insert({EDirectInput::KEY_USER2, 0});
 }
 
+DxMenuObject::~DxMenuObject() {
+
+}
+
 void DxMenuObject::Activate() {
 	//Only activate your menu object *after* you set up all the important parts!
 }
@@ -112,9 +116,6 @@ void DxMenuObject::ProcessMenuInputs() {
 	lastKey = thisFrame;
 }
 
-void DxMenuObject::OptionHandler_Keyboard() {
-}
-
 void DxMenuObject::OptionHandler() {
 	flags.actionT = false;
 
@@ -158,6 +159,56 @@ void DxMenuObject::OptionHandler() {
 	}
 
 	// up/down/shot logic here
+	if (lastKey.up) {
+		if (((buttonTimer[keys[2]] > buttonDelay) && (buttonTimer[keys[2]] % scrollInterval_slider == 0)) || (buttonTimer[keys[2]] == 1)) {
+			optionIndex = (optionIndex - 1 + maxIndex) % maxIndex;
+		}
+	}
+
+	if (lastKey.down) {
+		if (((buttonTimer[keys[3]] > buttonDelay) && (buttonTimer[keys[3]] % scrollInterval_slider == 0)) || (buttonTimer[keys[3]] == 1)) {
+			optionIndex = (optionIndex + 1) % maxIndex;
+		}
+	}
+
+	if (lastKey.shot) {
+		if ( (buttonTimer[keys[4]] == 1) && (timer > 5) ) {
+			flags.actionT = true;
+		}
+	}
+
+	if (lastKey.bomb) {
+		if ((buttonTimer[keys[5]] == 1) && (timer > 5)) {
+			if (optionType[optionIndex] == TYPE_MAIN) {
+				optionIndex = maxIndex - 1;
+			}
+			else {
+				if (parent != nullptr) {
+					manager_->DeleteObject(this);
+				}
+			}
+		}
+	}
+}
+
+void DxMenuObject::OptionHandler_Keyboard() {
+	EDirectInput* input = EDirectInput::GetInstance();
+
+	int16_t letterKeys[26] =	{DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, DIK_F, DIK_G, DIK_H, DIK_I, DIK_J,
+								 DIK_K, DIK_L, DIK_M, DIK_N, DIK_O, DIK_P, DIK_Q, DIK_R, DIK_S, DIK_T,
+								 DIK_U, DIK_V, DIK_W, DIK_X, DIK_Y, DIK_Z};
+	int16_t numberKeys[10] =	{DIK_0, DIK_1, DIK_2, DIK_3, DIK_4, DIK_5, DIK_6, DIK_7, DIK_8, DIK_9};
+	std::wstring newchar = L"";
+
+
+	for (int i = 0; i < 26; i++) {
+		uint64_t power_2_i = 1 << i;
+		if ( (input->GetKeyState(letterKeys[i]) == KEY_PUSH) && (input->GetKeyState(letterKeys[i]) == KEY_HOLD) ) {
+			if (keyboardButtonValue & power_2_i == 0) { //bitwise arithmetic still needed to check if it was pressed last frame
+				newchar = L"\x00" + std::to_wstring(i + 0x61);
+			}
+		}
+	}
 }
 
 // DxMenuObjectManger

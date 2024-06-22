@@ -69,17 +69,19 @@ namespace directx {
 			std::map<int16_t, int> buttonTimer;
 			static input_bitfield lastKey;
 			std::wstring keyboardInput;
+			uint64_t keyboardButtonValue = std::numeric_limits<uint64_t>::max() - 1;
 
 			const static int buttonDelay = 30;
 			const static int scrollInterval = 10;
 			const static int scrollInterval_slider = 3;
 
 			void ProcessMenuInputs();
-			void OptionHandler_Keyboard();
 			void OptionHandler();
+			void OptionHandler_Keyboard();
 
 		public:
 			DxMenuObject();
+			~DxMenuObject();
 			virtual void Activate();
 			virtual void Work();
 
