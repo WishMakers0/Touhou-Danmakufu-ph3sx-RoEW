@@ -85,21 +85,21 @@ namespace directx {
 			virtual void Activate();
 			virtual void Work();
 
-			int GetParent() { return parent->GetObjectID(); }
+			int GetParent() { return parent != nullptr ? parent->GetObjectID() : DxScript::ID_INVALID; }
 			bool GetDisabled() { return flags.disable; }
-			int GetRelatedObject(int index) { return relatedIDs[index] != nullptr ? relatedIDs[index]->GetObjectID() : DxScript::ID_INVALID; }
+			int GetRelatedObject(unsigned int index) { return relatedIDs[index] != nullptr ? relatedIDs[index]->GetObjectID() : DxScript::ID_INVALID; }
 			int GetOptionIndex() { return optionIndex; }
-			int GetOptionIndexX(int index) { return optionIndexX[index]; }
+			int GetOptionIndexX(unsigned int index) { return optionIndexX[index]; }
 			int GetMaxIndex() { return maxIndex; }
-			int GetMaxIndexX(int index) { return maxIndexX[index]; }
-			float GetSliderValue(int index) { return sliderValue[index]; }
-			int GetSliderMin(int index) { return sliderMin[index]; }
-			int GetSliderMax(int index) { return sliderMax[index]; }
-			float GetSliderIncr(int index) { return sliderIncr[index]; }
-			int GetOptionType(int index) { return (int)optionType[index]; }
-			int GetActionFlag() { return flags.actionT; }
+			int GetMaxIndexX(unsigned int index) { return maxIndexX[index]; }
+			float GetSliderValue(unsigned int index) { return sliderValue[index]; }
+			int GetSliderMin(unsigned int index) { return sliderMin[index]; }
+			int GetSliderMax(unsigned int index) { return sliderMax[index]; }
+			float GetSliderIncr(unsigned int index) { return sliderIncr[index]; }
+			int GetOptionType(unsigned int index) { return (int)optionType[index]; }
+			bool GetActionFlag() { return flags.actionT; }
 
-			void SetParent(DxScriptObjectBase* _p) { parent = _p; }
+			void SetParent(DxMenuObject* _p) { parent = _p; }
 			void AddRelatedObject(DxScriptObjectBase* _obj) { 
 				gstd::ref_count_weak_ptr<DxScriptObjectBase, false> _o; 
 				_o = _obj; 
@@ -113,6 +113,7 @@ namespace directx {
 			void SetSliderMax(unsigned int index, int val) { sliderMax[index] = val; }
 			void SetSliderMin(unsigned int index, int val) { sliderMin[index] = val; }
 			void SetSliderIncr(unsigned int index, float f) { sliderIncr[index] = f; }
+			void SetOptionType(unsigned int index, int val) { optionIndex = static_cast<t_option>(val); }
 
 	};
 

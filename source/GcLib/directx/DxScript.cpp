@@ -537,6 +537,7 @@ static const std::vector<function> dxFunction = {
 static const std::vector<constant> dxConstant = {
 	//Object types
 	constant("ID_INVALID", DxScript::ID_INVALID),
+	constant("DEFAULT_INT", DxScript::DEFAULT_INT),
 	constant("OBJ_BASE", (int)TypeObject::Base),
 	constant("OBJ_PRIMITIVE_2D", (int)TypeObject::Primitive2D),
 	constant("OBJ_SPRITE_2D", (int)TypeObject::Sprite2D),
@@ -2467,6 +2468,235 @@ value DxScript::Func_ObjMenu_Create(gstd::script_machine* machine, int argc, con
 	int id = script->AddObject(obj);
 	return script->CreateIntValue(id);
 }
+
+value DxScript::Func_ObjMenu_Regist(gstd::script_machine* machine, int argc, const value* argv) {
+	// THIS FUNCTION IS NOT FINISHED!!
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	ref_unsync_ptr<DxMenuObject> obj = new DxMenuObject();
+	int id = script->AddObject(obj);
+	return script->CreateIntValue(id);
+}
+
+value DxScript::Func_ObjMenu_GetParent(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int pid = ID_INVALID;
+	if (obj) {
+		pid = obj->GetParent();
+	}
+	return script->CreateIntValue(pid);
+}
+
+value DxScript::Func_ObjMenu_GetDisabled(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	bool ret = false;
+	if (obj) {
+		ret = obj->GetDisabled();
+	}
+	return script->CreateBooleanValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetRelatedObject(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret_id = ID_INVALID;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret_id = obj->GetRelatedObject(index);
+	}
+	return script->CreateIntValue(ret_id);
+}
+
+value DxScript::Func_ObjMenu_GetOptionIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	if (obj) {
+		ret = obj->GetOptionIndex();
+	}
+	return script->CreateIntValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetOptionIndexX(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetOptionIndexX(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetMaxIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	if (obj) {
+		ret = obj->GetMaxIndex();
+	}
+	return script->CreateIntValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetMaxIndexX(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetMaxIndexX(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetSliderValue(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	float ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderValue(index);
+	}
+	return script->CreateFloatValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetSliderMin(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderMin(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetSliderMax(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderMax(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetSliderIncr(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	float ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderIncr(index);
+	}
+	return script->CreateFloatValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetOptionType(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderIncr(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetActionFlag(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	bool ret = false;
+	if (obj) {
+		ret = obj->GetActionFlag();
+	}
+	return script->CreateBooleanValue(ret);
+}
+
+value DxScript::Func_ObjMenu_GetReturnValue(gstd::script_machine* machine, int argc, const value* argv) {
+	// THIS ONE IS NOT DONE AND ALSO COMPLICATED, COME BACK IN A BIT
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	bool ret = DEFAULT_INT;
+	if (obj) {
+		ret = obj->GetActionFlag();
+	}
+	return script->CreateBooleanValue(ret);
+}
+
+value DxScript::Func_ForceCloseAllMenus(gstd::script_machine* machine, int argc, const value* argv) {
+	// THIS ONE IS NOT DONE AND ALSO COMPLICATED, COME BACK IN A BIT
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetParent(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int pid = argv[1].as_int();
+		DxMenuObject* parent = nullptr;
+		if (pid != ID_INVALID) {
+			parent = script->GetObjectPointerAs<DxMenuObject>(pid);
+		}
+		obj->SetParent(parent);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_AddRelatedObject(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int pid = argv[1].as_int();
+		DxMenuObject* parent = nullptr;
+		if (pid != ID_INVALID) {
+			parent = script->GetObjectPointerAs<DxMenuObject>(pid);
+		}
+		obj->SetParent(parent);
+	}
+	return value();
+}
+
+// END: RoEW specific functions!!
 
 //Dx関数：オブジェクト操作(共通)
 value DxScript::Func_Obj_Create(gstd::script_machine* machine, int argc, const value* argv) {

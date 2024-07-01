@@ -14,6 +14,7 @@ namespace directx {
 		enum {
 			MAX_CLOSED_SCRIPT_RESULT = 100,
 			ID_INVALID = -1,
+			DEFAULT_INT = -999999,
 		};
 	protected:
 		static std::atomic<int64_t> idScript_;

@@ -32,6 +32,7 @@ void DxMenuObject::Activate() {
 
 void DxMenuObject::Work() {
 	// Do stuff
+	if (!bActive_) { return; }
 	if (flags.disable) { return; }
 	timer++;
 
@@ -192,6 +193,7 @@ void DxMenuObject::OptionHandler() {
 }
 
 void DxMenuObject::OptionHandler_Keyboard() {
+	/*
 	EDirectInput* input = EDirectInput::GetInstance();
 
 	int16_t letterKeys[26] =	{DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, DIK_F, DIK_G, DIK_H, DIK_I, DIK_J,
@@ -208,7 +210,8 @@ void DxMenuObject::OptionHandler_Keyboard() {
 				newchar = L"\x00" + std::to_wstring(i + 0x61);
 			}
 		}
-	}
+	}*/
+
 }
 
 // DxMenuObjectManger
