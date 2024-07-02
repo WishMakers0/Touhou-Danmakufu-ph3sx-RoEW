@@ -281,6 +281,7 @@ namespace directx {
 		static gstd::value Func_ObjMenu_SetSliderMin(gstd::script_machine* machine, int argc, const gstd::value* argv);
 		static gstd::value Func_ObjMenu_SetSliderIncr(gstd::script_machine* machine, int argc, const gstd::value* argv);
 		static gstd::value Func_ObjMenu_SetOptionType(gstd::script_machine* machine, int argc, const gstd::value* argv);
+		static gstd::value Func_ObjMenu_SetReturnValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
 
 		//Dx関数：オブジェクト操作(共通)
 		static gstd::value Func_Obj_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);

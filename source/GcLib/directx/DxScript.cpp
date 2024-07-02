@@ -2686,12 +2686,116 @@ value DxScript::Func_ObjMenu_AddRelatedObject(gstd::script_machine* machine, int
 	int id = argv[0].as_int();
 	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
 	if (obj) {
-		int pid = argv[1].as_int();
-		DxMenuObject* parent = nullptr;
+		int obj_id = argv[1].as_int();
+		DxScriptObjectBase* obj_a = nullptr;
 		if (pid != ID_INVALID) {
-			parent = script->GetObjectPointerAs<DxMenuObject>(pid);
+			obj_a = script->GetObjectPointer<DxScriptObjectBase>(obj_id);
 		}
-		obj->SetParent(parent);
+		obj->AddRelatedObject(parent);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetMaxIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int arg = argv[1].as_int();
+		obj->SetMaxIndex(arg);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetMaxIndexX(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetMaxIndexX(index, arg);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetSliderValue(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		float arg = argv[2].as_int();
+		obj->SetSliderValue(index, arg);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetSliderMax(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetSliderMax(index, arg);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetSliderMin(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetSliderMin(index, arg);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetSliderIncr(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		float arg = argv[2].as_int();
+		obj->SetSliderIncr(index, arg);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetOptionType(gstd::script_machine* machine, int argc, const value* argv) {
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetOptionType(index, arg);
+	}
+	return value();
+}
+
+value DxScript::Func_ObjMenu_SetReturnValue(gstd::script_machine* machine, int argc, const value* argv) {
+	// THIS ONE IS NOT DONE AND ALSO COMPLICATED, COME BACK IN A BIT
+	DxScript* script = (DxScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetOptionType(index, arg);
 	}
 	return value();
 }
