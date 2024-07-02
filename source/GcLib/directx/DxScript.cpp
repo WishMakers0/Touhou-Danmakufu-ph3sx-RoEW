@@ -238,6 +238,34 @@ static const std::vector<function> dxFunction = {
 
 	// RoEW specific stuff!!
 	{ "ObjMenu_Create", DxScript::Func_ObjMenu_Create, 0 },
+	{ "ObjMenu_Regist", DxScript::Func_ObjMenu_Regist, 1 },
+
+	{ "ObjMenu_GetParent", DxScript::Func_ObjMenu_GetParent, 1 },
+	{ "ObjMenu_GetDisabled", DxScript::Func_ObjMenu_GetDisabled, 1 },
+	{ "ObjMenu_GetRelatedObject", DxScript::Func_ObjMenu_GetRelatedObject, 2 },
+	{ "ObjMenu_GetOptionIndex", DxScript::Func_ObjMenu_GetOptionIndex, 1 },
+	{ "ObjMenu_GetOptionIndexX", DxScript::Func_ObjMenu_GetOptionIndexX, 2 },
+	{ "ObjMenu_GetMaxIndex", DxScript::Func_ObjMenu_GetMaxIndex, 1 },
+	{ "ObjMenu_GetMaxIndexX", DxScript::Func_ObjMenu_GetMaxIndexX, 2 },
+	{ "ObjMenu_GetSliderValue", DxScript::Func_ObjMenu_GetSliderValue, 2 },
+	{ "ObjMenu_GetSliderMax", DxScript::Func_ObjMenu_GetSliderMax, 2 },
+	{ "ObjMenu_GetSliderMin", DxScript::Func_ObjMenu_GetSliderMin, 2 },
+	{ "ObjMenu_GetSliderIncr", DxScript::Func_ObjMenu_GetSliderIncr, 2 },
+	{ "ObjMenu_GetOptionType", DxScript::Func_ObjMenu_GetOptionType, 2 },
+	{ "ObjMenu_GetActionFlag", DxScript::Func_ObjMenu_GetActionFlag, 1 },
+	{ "ObjMenu_GetReturnValue", DxScript::Func_ObjMenu_GetReturnValue, 1 },
+
+	{ "ForceCloseAllMenus", DxScript::Func_ForceCloseAllMenus, 0 },
+
+	{ "ObjMenu_SetParent", DxScript::Func_ObjMenu_SetParent, 2 },
+	{ "ObjMenu_AddRelatedObject", DxScript::Func_ObjMenu_AddRelatedObject, 2 },
+	{ "ObjMenu_SetMaxIndex", DxScript::Func_ObjMenu_SetMaxIndex, 2 },
+	{ "ObjMenu_SetMaxIndexX", DxScript::Func_ObjMenu_SetMaxIndexX, 3 },
+	{ "ObjMenu_SetSliderMax", DxScript::Func_ObjMenu_SetSliderMax, 3 },
+	{ "ObjMenu_SetSliderMin", DxScript::Func_ObjMenu_SetSliderMin, 3 },
+	{ "ObjMenu_SetSliderIncr", DxScript::Func_ObjMenu_SetSliderIncr, 3 },
+	{ "ObjMenu_SetOptionType", DxScript::Func_ObjMenu_SetOptionType, 3 },
+	{ "ObjMenu_SetReturnValue", DxScript::Func_ObjMenu_SetReturnValue, 2 },
 
 	//Base object functions
 	{ "Obj_Create", DxScript::Func_Obj_Create, 0 },
@@ -802,6 +830,13 @@ static const std::vector<constant> dxConstant = {
 	constant("KEY_APPS", DIK_APPS),
 	constant("KEY_POWER", DIK_POWER),
 	constant("KEY_SLEEP", DIK_SLEEP),
+
+	constant("MENU_TYPE_INVALID", 0),
+	constant("MENU_TYPE_KEYBOARD", 1),
+	constant("MENU_TYPE_XAXIS", 2),
+	constant("MENU_TYPE_SLIDER", 3),
+	constant("MENU_TYPE_MAIN", 4),
+	constant("MENU_TYPE_NORMAL", 5),
 };
 
 double DxScript::g_posInvalidX_ = 0;
@@ -820,6 +855,7 @@ DxScript::DxScript() {
 	}
 
 	objManager_ = std::shared_ptr<DxScriptObjectManager>(new DxScriptObjectManager());
+	menuManager_ = std::shared_ptr<DxMenuObjectManager>(new DxMenuObjectManager());
 
 	{
 		pResouceCache_ = DxScriptResourceCache::GetBase();
@@ -2470,13 +2506,15 @@ value DxScript::Func_ObjMenu_Create(gstd::script_machine* machine, int argc, con
 }
 
 value DxScript::Func_ObjMenu_Regist(gstd::script_machine* machine, int argc, const value* argv) {
-	// THIS FUNCTION IS NOT FINISHED!!
 	DxScript* script = (DxScript*)machine->data;
 	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	obj->Activate();
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	manager->AddMenuID(id);
 
-	ref_unsync_ptr<DxMenuObject> obj = new DxMenuObject();
-	int id = script->AddObject(obj);
-	return script->CreateIntValue(id);
+	return value();
 }
 
 value DxScript::Func_ObjMenu_GetParent(gstd::script_machine* machine, int argc, const value* argv) {
@@ -2644,22 +2682,26 @@ value DxScript::Func_ObjMenu_GetActionFlag(gstd::script_machine* machine, int ar
 }
 
 value DxScript::Func_ObjMenu_GetReturnValue(gstd::script_machine* machine, int argc, const value* argv) {
-	// THIS ONE IS NOT DONE AND ALSO COMPLICATED, COME BACK IN A BIT
 	DxScript* script = (DxScript*)machine->data;
 	script->CheckRunInMainThread();
 	int id = argv[0].as_int();
-	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
-	bool ret = DEFAULT_INT;
-	if (obj) {
-		ret = obj->GetActionFlag();
-	}
-	return script->CreateBooleanValue(ret);
+	gstd::value ret = value();
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	ret = manager->GetReturnValue(id);
+
+	return ret;
 }
 
 value DxScript::Func_ForceCloseAllMenus(gstd::script_machine* machine, int argc, const value* argv) {
-	// THIS ONE IS NOT DONE AND ALSO COMPLICATED, COME BACK IN A BIT
 	DxScript* script = (DxScript*)machine->data;
 	script->CheckRunInMainThread();
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	for (const int& i : manager->menuIDs) { //woah, TIL C++ has range-based for loops, awesome
+		int id = i;
+		script->DeleteObject(id);
+	}
+	// I see little reason why this should fail, but I suppose I could eat those words later...
+	manager->menuIDs.clear();
 
 	return value();
 }
@@ -2689,9 +2731,9 @@ value DxScript::Func_ObjMenu_AddRelatedObject(gstd::script_machine* machine, int
 		int obj_id = argv[1].as_int();
 		DxScriptObjectBase* obj_a = nullptr;
 		if (pid != ID_INVALID) {
-			obj_a = script->GetObjectPointer<DxScriptObjectBase>(obj_id);
+			obj_a = script->GetObjectPointer(obj_id);
 		}
-		obj->AddRelatedObject(parent);
+		obj->AddRelatedObject(obj_a);
 	}
 	return value();
 }
@@ -2717,19 +2759,6 @@ value DxScript::Func_ObjMenu_SetMaxIndexX(gstd::script_machine* machine, int arg
 		int index = argv[1].as_int();
 		int arg = argv[2].as_int();
 		obj->SetMaxIndexX(index, arg);
-	}
-	return value();
-}
-
-value DxScript::Func_ObjMenu_SetSliderValue(gstd::script_machine* machine, int argc, const value* argv) {
-	DxScript* script = (DxScript*)machine->data;
-	script->CheckRunInMainThread();
-	int id = argv[0].as_int();
-	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
-	if (obj) {
-		int index = argv[1].as_int();
-		float arg = argv[2].as_int();
-		obj->SetSliderValue(index, arg);
 	}
 	return value();
 }
@@ -2767,7 +2796,7 @@ value DxScript::Func_ObjMenu_SetSliderIncr(gstd::script_machine* machine, int ar
 	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
 	if (obj) {
 		int index = argv[1].as_int();
-		float arg = argv[2].as_int();
+		float arg = argv[2].as_float();
 		obj->SetSliderIncr(index, arg);
 	}
 	return value();
@@ -2787,16 +2816,13 @@ value DxScript::Func_ObjMenu_SetOptionType(gstd::script_machine* machine, int ar
 }
 
 value DxScript::Func_ObjMenu_SetReturnValue(gstd::script_machine* machine, int argc, const value* argv) {
-	// THIS ONE IS NOT DONE AND ALSO COMPLICATED, COME BACK IN A BIT
 	DxScript* script = (DxScript*)machine->data;
 	script->CheckRunInMainThread();
 	int id = argv[0].as_int();
-	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
-	if (obj) {
-		int index = argv[1].as_int();
-		int arg = argv[2].as_int();
-		obj->SetOptionType(index, arg);
-	}
+	gstd::value arg = argv[1];
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	manager->SetReturnValue(id, arg);
+
 	return value();
 }
 

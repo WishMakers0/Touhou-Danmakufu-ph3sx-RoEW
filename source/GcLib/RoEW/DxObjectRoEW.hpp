@@ -55,7 +55,7 @@ namespace directx {
 				TYPE_MAIN = 4,
 				TYPE_NORMAL = 5
 			};
-			gstd::ref_count_weak_ptr<DxScriptObjectBase, false> parent;
+			gstd::ref_count_weak_ptr<DxMenuObject, false> parent;
 			unsigned int optionIndex;
 			unsigned int maxIndex;
 			std::vector<gstd::ref_count_weak_ptr<DxScriptObjectBase, false>> relatedIDs;
@@ -84,6 +84,9 @@ namespace directx {
 			~DxMenuObject();
 			virtual void Activate();
 			virtual void Work();
+
+			void Enable();
+			void Disable();
 
 			int GetParent() { return parent != nullptr ? parent->GetObjectID() : DxScript::ID_INVALID; }
 			bool GetDisabled() { return flags.disable; }
@@ -126,7 +129,7 @@ namespace directx {
 
 	public:
 		DxMenuObjectManager();
-		void ForceCloseAllMenus();
+		void AddMenuID(int oid) { menuIDs.push_back(oid); }
 		gstd::value GetReturnValue(int oid) { return menuResult[oid]; }
 		void SetReturnValue(int oid, gstd::value val) { menuResult[oid] = val; }
 	};

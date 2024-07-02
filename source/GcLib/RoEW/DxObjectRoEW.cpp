@@ -23,11 +23,30 @@ DxMenuObject::DxMenuObject() {
 }
 
 DxMenuObject::~DxMenuObject() {
-
+	for (auto& obj : relatedIDs) {
+		if (obj) { obj->QueueDelete(); }
+	}
+	if (parent) { parent->Enable(); }
 }
 
 void DxMenuObject::Activate() {
 	//Only activate your menu object *after* you set up all the important parts!
+	bActive_ = true;
+	if (parent) { parent->Disable(); }
+}
+
+void DxMenuObject::Disable() {
+	for (auto& obj : relatedIDs) {
+		if (obj) { obj->SetVis(false); }
+	}
+	flags.disable = true;
+}
+
+void DxMenuObject::Enable() {
+	for (auto& obj : relatedIDs) {
+		if (obj) { obj->SetVis(true); }
+	}
+	flags.disable = false;
 }
 
 void DxMenuObject::Work() {
@@ -219,5 +238,5 @@ void DxMenuObject::OptionHandler_Keyboard() {
 DxMenuObjectManager::DxMenuObjectManager() {
 }
 
-void DxMenuObjectManager::ForceCloseAllMenus() {
-}
+// No need for this!  Handled in DxScript!
+//void DxMenuObjectManager::ForceCloseAllMenus() {}

@@ -59,6 +59,7 @@ namespace directx {
 		bool IsActive() { return bActive_; }
 		void SetActive(bool bActive) { bActive_ = bActive; }
 		bool IsVisible() { return bVisible_; }
+		void SetVis(bool bVis) { bVisible_ = bVis; }
 
 		double GetRenderPriority();
 		int GetRenderPriorityI() { return priRender_; }

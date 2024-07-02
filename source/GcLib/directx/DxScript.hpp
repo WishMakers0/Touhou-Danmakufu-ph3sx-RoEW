@@ -51,6 +51,7 @@ namespace directx {
 		static double g_posInvalidZ_;
 	protected:
 		std::shared_ptr<DxScriptObjectManager> objManager_;
+		std::shared_ptr<DxMenuObjectManager> menuManager_; // RoEW related
 
 		DxScriptResourceCache* pResouceCache_;
 	public:
@@ -59,6 +60,7 @@ namespace directx {
 
 		void SetObjectManager(std::shared_ptr<DxScriptObjectManager> manager) { objManager_ = manager; }
 		std::shared_ptr<DxScriptObjectManager> GetObjectManager() { return objManager_; }
+		std::shared_ptr<DxMenuObjectManager> GetMenuObjectManager() { return menuManager_; } //RoEW
 
 		void SetMaxObject(size_t size) { objManager_->SetMaxObject(size); }
 		void SetRenderBucketCapacity(int capacity) { objManager_->SetRenderBucketCapacity(capacity); }
