@@ -3,7 +3,6 @@
 #include "../directx/DxObject.hpp"
 #include "../directx/DxScript.hpp"
 #include "../directx/DirectInput.hpp"
-#include "../../TouhouDanmakufu/Common/DnhGcLibImpl.hpp"
 
 using namespace directx;
 
@@ -12,14 +11,15 @@ using namespace directx;
 DxMenuObject::DxMenuObject() {
 	timer = 0;
 	// set up buttonTimer correctly
-	buttonTimer.insert({EDirectInput::KEY_LEFT, 0});
-	buttonTimer.insert({EDirectInput::KEY_RIGHT, 0});
-	buttonTimer.insert({EDirectInput::KEY_UP, 0});
-	buttonTimer.insert({EDirectInput::KEY_DOWN, 0});
-	buttonTimer.insert({EDirectInput::KEY_SHOT, 0});
-	buttonTimer.insert({EDirectInput::KEY_BOMB, 0});
-	buttonTimer.insert({EDirectInput::KEY_USER1, 0});
-	buttonTimer.insert({EDirectInput::KEY_USER2, 0});
+	buttonTimer.insert({ KEY_LEFT, 0 });
+	buttonTimer.insert({ KEY_RIGHT, 0 });
+	buttonTimer.insert({ KEY_UP, 0 });
+	buttonTimer.insert({ KEY_DOWN, 0 });
+	buttonTimer.insert({ KEY_SHOT, 0 });
+	buttonTimer.insert({ KEY_BOMB, 0 });
+	buttonTimer.insert({ KEY_USER1, 0 });
+	buttonTimer.insert({ KEY_USER2, 0 });
+	input = dynamic_cast<VirtualKeyManager*>(DirectInput::GetBase());
 }
 
 DxMenuObject::~DxMenuObject() {
@@ -59,17 +59,16 @@ void DxMenuObject::Work() {
 }
 
 void DxMenuObject::ProcessMenuInputs() {
-	EDirectInput* input = EDirectInput::GetInstance();
 	input_bitfield thisFrame;
 
-	int16_t keys[8] = {EDirectInput::KEY_LEFT, EDirectInput::KEY_RIGHT, EDirectInput::KEY_UP, EDirectInput::KEY_DOWN,
-	EDirectInput::KEY_SHOT, EDirectInput::KEY_BOMB, EDirectInput::KEY_USER1, EDirectInput::KEY_USER2};
+	int16_t keys[8] = { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN,
+	KEY_SHOT, KEY_BOMB, KEY_USER1, KEY_USER2 };
 
 	//there's probably an efficient loop I can make for this but I don't feel like it...
 	//nvm yes i do
 	//edit: 2 hours later, i regret every decision that led me to this.
 	//nvm fuck compact efficient loops i give up C has bested me in combat
-	if ( (input->GetVirtualKeyState(EDirectInput::KEY_LEFT) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_LEFT) == KEY_HOLD) ) {
+	if ((input->GetVirtualKeyState(KEY_LEFT) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_LEFT) == KEY_HOLD)) {
 		thisFrame.left = true;
 		buttonTimer[keys[0]]++;
 	}
@@ -77,7 +76,7 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[0]] = 0;
 	}
 
-	if ((input->GetVirtualKeyState(EDirectInput::KEY_RIGHT) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_RIGHT) == KEY_HOLD)) {
+	if ((input->GetVirtualKeyState(KEY_RIGHT) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_RIGHT) == KEY_HOLD)) {
 		thisFrame.right = true;
 		buttonTimer[keys[1]]++;
 	}
@@ -85,7 +84,7 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[1]] = 0;
 	}
 
-	if ((input->GetVirtualKeyState(EDirectInput::KEY_UP) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_UP) == KEY_HOLD)) {
+	if ((input->GetVirtualKeyState(KEY_UP) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_UP) == KEY_HOLD)) {
 		thisFrame.up = true;
 		buttonTimer[keys[2]]++;
 	}
@@ -93,7 +92,7 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[2]] = 0;
 	}
 
-	if ((input->GetVirtualKeyState(EDirectInput::KEY_DOWN) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_DOWN) == KEY_HOLD)) {
+	if ((input->GetVirtualKeyState(KEY_DOWN) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_DOWN) == KEY_HOLD)) {
 		thisFrame.down = true;
 		buttonTimer[keys[3]]++;
 	}
@@ -101,7 +100,7 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[3]] = 0;
 	}
 
-	if ((input->GetVirtualKeyState(EDirectInput::KEY_SHOT) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_SHOT) == KEY_HOLD)) {
+	if ((input->GetVirtualKeyState(KEY_SHOT) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_SHOT) == KEY_HOLD)) {
 		thisFrame.shot = true;
 		buttonTimer[keys[4]]++;
 	}
@@ -109,7 +108,7 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[4]] = 0;
 	}
 
-	if ((input->GetVirtualKeyState(EDirectInput::KEY_BOMB) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_BOMB) == KEY_HOLD)) {
+	if ((input->GetVirtualKeyState(KEY_BOMB) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_BOMB) == KEY_HOLD)) {
 		thisFrame.bomb = true;
 		buttonTimer[keys[5]]++;
 	}
@@ -117,7 +116,7 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[5]] = 0;
 	}
 
-	if ((input->GetVirtualKeyState(EDirectInput::KEY_USER1) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_USER1) == KEY_HOLD)) {
+	if ((input->GetVirtualKeyState(KEY_USER1) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_USER1) == KEY_HOLD)) {
 		thisFrame.user1 = true;
 		buttonTimer[keys[6]]++;
 	}
@@ -125,7 +124,7 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[6]] = 0;
 	}
 
-	if ((input->GetVirtualKeyState(EDirectInput::KEY_USER2) == KEY_PUSH) || (input->GetVirtualKeyState(EDirectInput::KEY_USER2) == KEY_HOLD)) {
+	if ((input->GetVirtualKeyState(KEY_USER2) == KEY_PUSH) || (input->GetVirtualKeyState(KEY_USER2) == KEY_HOLD)) {
 		thisFrame.user2 = true;
 		buttonTimer[keys[7]]++;
 	}
@@ -140,8 +139,8 @@ void DxMenuObject::OptionHandler() {
 	flags.actionT = false;
 
 	// keeping this the same, would love to make it const, but meh
-	int16_t keys[8] = { EDirectInput::KEY_LEFT, EDirectInput::KEY_RIGHT, EDirectInput::KEY_UP, EDirectInput::KEY_DOWN,
-	EDirectInput::KEY_SHOT, EDirectInput::KEY_BOMB, EDirectInput::KEY_USER1, EDirectInput::KEY_USER2 };
+	int16_t keys[8] = { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN,
+	KEY_SHOT, KEY_BOMB, KEY_USER1, KEY_USER2 };
 
 	if (optionType[optionIndex] == TYPE_KEYBOARD) {
 		OptionHandler_Keyboard();
@@ -192,7 +191,7 @@ void DxMenuObject::OptionHandler() {
 	}
 
 	if (lastKey.shot) {
-		if ( (buttonTimer[keys[4]] == 1) && (timer > 5) ) {
+		if ((buttonTimer[keys[4]] == 1) && (timer > 5)) {
 			flags.actionT = true;
 		}
 	}
@@ -213,7 +212,6 @@ void DxMenuObject::OptionHandler() {
 
 void DxMenuObject::OptionHandler_Keyboard() {
 	/*
-	EDirectInput* input = EDirectInput::GetInstance();
 
 	int16_t letterKeys[26] =	{DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, DIK_F, DIK_G, DIK_H, DIK_I, DIK_J,
 								 DIK_K, DIK_L, DIK_M, DIK_N, DIK_O, DIK_P, DIK_Q, DIK_R, DIK_S, DIK_T,

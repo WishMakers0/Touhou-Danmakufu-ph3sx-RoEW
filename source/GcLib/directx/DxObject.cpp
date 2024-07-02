@@ -6,6 +6,7 @@
 #include "DirectInput.hpp"
 #include "MetasequoiaMesh.hpp"
 //#include "ElfreinaMesh.hpp"
+#include "../RoEW/DxObjectRoEW.hpp"
 
 using namespace gstd;
 using namespace directx;
@@ -1289,6 +1290,8 @@ DWORD DxBinaryFileObject::Write(LPVOID data, size_t size) {
 	if (buffer_ == nullptr) return 0;
 	return buffer_->Write(data, size);
 }
+
+
 
 //****************************************************************************
 //DxScriptObjectManager

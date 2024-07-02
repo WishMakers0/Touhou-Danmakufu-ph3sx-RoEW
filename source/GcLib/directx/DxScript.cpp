@@ -8,6 +8,7 @@
 #include "DirectInput.hpp"
 #include "MetasequoiaMesh.hpp"
 //#include "ElfreinaMesh.hpp"
+#include "../RoEW/DxObjectRoEW.hpp"
 
 using namespace gstd;
 using namespace directx;
@@ -2729,11 +2730,10 @@ value DxScript::Func_ObjMenu_AddRelatedObject(gstd::script_machine* machine, int
 	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
 	if (obj) {
 		int obj_id = argv[1].as_int();
-		DxScriptObjectBase* obj_a = nullptr;
-		if (pid != ID_INVALID) {
-			obj_a = script->GetObjectPointer(obj_id);
+		DxScriptObjectBase* obj_a = script->GetObjectPointer(obj_id);
+		if (obj_a) {
+			obj->AddRelatedObject(obj_a);
 		}
-		obj->AddRelatedObject(obj_a);
 	}
 	return value();
 }

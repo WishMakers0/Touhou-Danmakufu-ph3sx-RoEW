@@ -5,10 +5,12 @@
 #include "../gstd/ScriptClient.hpp"
 
 #include "DxConstant.hpp"
+#include "DirectInput.hpp"
 #include "Texture.hpp"
 #include "DxText.hpp"
 #include "RenderObject.hpp"
 #include "DirectSound.hpp"
+#include "../RoEW/DxObjectRoEW.hpp"
 
 namespace directx {
 	class DxScript;
