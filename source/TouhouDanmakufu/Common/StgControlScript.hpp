@@ -3,6 +3,7 @@
 #include "../../GcLib/pch.h"
 
 #include "StgCommon.hpp"
+#include "./RoEW/DxObjectRoEW.hpp"
 
 class StgControlScript;
 //*******************************************************************

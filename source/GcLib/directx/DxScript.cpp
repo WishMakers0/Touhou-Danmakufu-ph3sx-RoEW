@@ -824,7 +824,6 @@ DxScript::DxScript() {
 	}
 
 	objManager_ = std::shared_ptr<DxScriptObjectManager>(new DxScriptObjectManager());
-	menuManager_ = std::shared_ptr<DxMenuObjectManager>(new DxMenuObjectManager());
 
 	{
 		pResouceCache_ = DxScriptResourceCache::GetBase();

@@ -220,6 +220,8 @@ StgControlScript::StgControlScript(StgSystemController* systemController) {
 	_AddFunction(&stgControlFunction);
 	_AddConstant(&stgControlConstant);
 
+	menuManager_ = std::shared_ptr<DxMenuObjectManager>(new DxMenuObjectManager());
+
 	SetScriptEngineCache(systemController->GetScriptEngineCache());
 }
 
@@ -1374,6 +1376,9 @@ value StgControlScript::Func_ForceCloseAllMenus(gstd::script_machine* machine, i
 	StgControlScript* script = (StgControlScript*)machine->data;
 	script->CheckRunInMainThread();
 	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	//Moved this logic cuz friend functionality wasn't playing nice...  now moved it back......
+	//manager->ForceCloseMenus(script);
+
 	for (const int& i : manager->menuIDs) { //woah, TIL C++ has range-based for loops, awesome
 		int id = i;
 		script->DeleteObject(id);

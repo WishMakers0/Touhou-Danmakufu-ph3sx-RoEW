@@ -313,11 +313,11 @@ xcopy /e/h/y/i "$(ProjectDir)source/TouhouDanmakufu" "$(ProjectDir).bk/TouhouDan
       <PrecompiledHeaderFile Condition="'$(Configuration)|$(Platform)'=='Release (Legacy)|Win32'">pch.h</PrecompiledHeaderFile>
       <PrecompiledHeaderOutputFile Condition="'$(Configuration)|$(Platform)'=='Release (Legacy)|Win32'">DnhExecutor/Release_legacy/DnhExecutor.pch</PrecompiledHeaderOutputFile>
     </ClCompile>
-    <ClCompile Include="source\GcLib\RoEW\DxObjectRoEW.cpp" />
     <ClCompile Include="source\TouhouDanmakufu\Common\DnhCommon.cpp" />
     <ClCompile Include="source\TouhouDanmakufu\Common\DnhGcLibImpl.cpp" />
     <ClCompile Include="source\TouhouDanmakufu\Common\DnhReplay.cpp" />
     <ClCompile Include="source\TouhouDanmakufu\Common\DnhScript.cpp" />
+    <ClCompile Include="source\TouhouDanmakufu\Common\RoEW\DxObjectRoEW.cpp" />
     <ClCompile Include="source\TouhouDanmakufu\Common\StgCommon.cpp" />
     <ClCompile Include="source\TouhouDanmakufu\Common\StgControlScript.cpp" />
     <ClCompile Include="source\TouhouDanmakufu\Common\StgEnemy.cpp" />
@@ -386,7 +386,6 @@ xcopy /e/h/y/i "$(ProjectDir)source/TouhouDanmakufu" "$(ProjectDir).bk/TouhouDan
     <ClInclude Include="source\GcLib\pch.h">
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">false</ExcludedFromBuild>
     </ClInclude>
-    <ClInclude Include="source\GcLib\RoEW\DxObjectRoEW.hpp" />
     <ClInclude Include="source\Steam\Achievement.hpp" />
     <ClInclude Include="source\Steam\SteamBase.hpp" />
     <ClInclude Include="source\TouhouDanmakufu\Common\DnhCommon.hpp" />
@@ -394,6 +393,7 @@ xcopy /e/h/y/i "$(ProjectDir)source/TouhouDanmakufu" "$(ProjectDir).bk/TouhouDan
     <ClInclude Include="source\TouhouDanmakufu\Common\DnhGcLibImpl.hpp" />
     <ClInclude Include="source\TouhouDanmakufu\Common\DnhReplay.hpp" />
     <ClInclude Include="source\TouhouDanmakufu\Common\DnhScript.hpp" />
+    <ClInclude Include="source\TouhouDanmakufu\Common\RoEW\DxObjectRoEW.hpp" />
     <ClInclude Include="source\TouhouDanmakufu\Common\StgCommon.hpp" />
     <ClInclude Include="source\TouhouDanmakufu\Common\StgControlScript.hpp" />
     <ClInclude Include="source\TouhouDanmakufu\Common\StgEnemy.hpp" />

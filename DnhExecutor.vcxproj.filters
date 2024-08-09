@@ -30,8 +30,8 @@
     <Filter Include="source\GcLib\directx\Mesh">
       <UniqueIdentifier>{e73259af-d068-459b-8c48-0927a38e30fc}</UniqueIdentifier>
     </Filter>
-    <Filter Include="source\GcLib\RoEW">
-      <UniqueIdentifier>{9909f79e-275e-49d7-b19c-1db7dc4d26aa}</UniqueIdentifier>
+    <Filter Include="source\Common\RoEW">
+      <UniqueIdentifier>{ce7ccc91-1415-40a9-b7ac-b47b9186499f}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -212,8 +212,8 @@
     <ClCompile Include="source\GcLib\directx\DxUtilityIntersection.cpp">
       <Filter>source\GcLib\directx</Filter>
     </ClCompile>
-    <ClCompile Include="source\GcLib\RoEW\DxObjectRoEW.cpp">
-      <Filter>source\GcLib\RoEW</Filter>
+    <ClCompile Include="source\TouhouDanmakufu\Common\RoEW\DxObjectRoEW.cpp">
+      <Filter>source\Common\RoEW</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
@@ -430,8 +430,8 @@
     <ClInclude Include="source\GcLib\gstd\GstdConstant.hpp">
       <Filter>source\GcLib\gstd</Filter>
     </ClInclude>
-    <ClInclude Include="source\GcLib\RoEW\DxObjectRoEW.hpp">
-      <Filter>source\GcLib\RoEW</Filter>
+    <ClInclude Include="source\TouhouDanmakufu\Common\RoEW\DxObjectRoEW.hpp">
+      <Filter>source\Common\RoEW</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

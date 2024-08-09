@@ -1,10 +1,10 @@
 #include "source/GcLib/pch.h"
 
-#include "../../GcLib/directx/DxObject.hpp"
-#include "../../GcLib/directx/DxScript.hpp"
-#include "../../GcLib/directx/DirectInput.hpp"
+#include "../../../GcLib/directx/DxObject.hpp"
+#include "../../../GcLib/directx/DirectInput.hpp"
+#include "../StgControlScript.hpp"
 
-using namespace directx;
+//using namespace directx;
 
 // DxMenuObject
 

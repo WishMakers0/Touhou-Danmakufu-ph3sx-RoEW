@@ -1,18 +1,16 @@
 #pragma once
-#include "../../GcLib/pch.h"
+#include "../../../GcLib/pch.h"
 
-#include "../../GcLib/directx/DxObject.hpp"
-#include "../../GcLib/directx/DxScript.hpp"
-#include "../../GcLib/directx/DirectInput.hpp"
-
-namespace directx {
+#include "../../../GcLib/directx/DxObject.hpp"
+#include "../../../GcLib/directx/DirectInput.hpp"
+#include "../StgControlScript.hpp"
 
 	//****************************************************************************
 	//DxMenuObject
 	//****************************************************************************
 
 	class DxMenuObject : public DxScriptObjectBase {
-		friend DxScript;
+		friend class StgControlScript;
 
 	public:
 		enum {
@@ -89,7 +87,7 @@ namespace directx {
 		std::map<unsigned int, float> sliderIncr;
 		std::vector<t_option> optionType;
 		std::map<int16_t, int> buttonTimer;
-		static input_bitfield lastKey;
+		input_bitfield lastKey; //wanted it to be static but C++ is a big meanie
 		std::wstring keyboardInput;
 		uint64_t keyboardButtonValue = std::numeric_limits<uint64_t>::max() - 1;
 		VirtualKeyManager* input;
@@ -101,6 +99,18 @@ namespace directx {
 		void ProcessMenuInputs();
 		void OptionHandler();
 		void OptionHandler_Keyboard();
+		input_bitfield InitStaticBitfield() {
+			input_bitfield ret;
+			ret.left = false;
+			ret.right = false;
+			ret.up = false;
+			ret.down = false;
+			ret.shot = false;
+			ret.bomb = false;
+			ret.user1 = false;
+			ret.user2 = false;
+			return ret;
+		}
 
 	public:
 		DxMenuObject();
@@ -144,18 +154,17 @@ namespace directx {
 	};
 
 	class DxMenuObjectManager : public DxScriptObjectBase {
-		friend DxScript;
-		friend StgControlScript;
 
-	protected:
-		std::vector<int> menuIDs;
-		std::map<int, gstd::value> menuResult;
+		friend class StgControlScript;
 
-	public:
-		DxMenuObjectManager();
-		void AddMenuID(int oid) { menuIDs.push_back(oid); }
-		gstd::value GetReturnValue(int oid) { return menuResult[oid]; }
-		void SetReturnValue(int oid, gstd::value val) { menuResult[oid] = val; }
+		protected:
+			std::vector<int> menuIDs;
+			std::map<int, gstd::value> menuResult;
+
+		public:
+			DxMenuObjectManager();
+			void AddMenuID(int oid) { menuIDs.push_back(oid); }
+			gstd::value GetReturnValue(int oid) { return menuResult[oid]; }
+			void SetReturnValue(int oid, gstd::value val) { menuResult[oid] = val; }
+			//void ForceCloseMenus(StgControlScript* script) {}
 	};
-
-}
