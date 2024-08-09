@@ -33,6 +33,7 @@ DxMenuObject::~DxMenuObject() {
 void DxMenuObject::Activate() {
 	//Only activate your menu object *after* you set up all the important parts!
 	bActive_ = true;
+	optionIndex = 0;
 	if (parent) { parent->Disable(); }
 }
 
