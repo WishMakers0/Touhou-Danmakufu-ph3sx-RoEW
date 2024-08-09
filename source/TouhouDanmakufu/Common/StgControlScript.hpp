@@ -83,8 +83,11 @@ protected:
 	StgSystemController* systemController_;
 
 	std::map<std::wstring, ref_count_ptr<ScriptInformation>> mapScriptInfo_;
+	std::shared_ptr<DxMenuObjectManager> menuManager_; // RoEW related
 public:
 	StgControlScript(StgSystemController* systemController);
+
+	std::shared_ptr<DxMenuObjectManager> GetMenuObjectManager() { return menuManager_; } //RoEW
 
 	//Area common data save/load
 	static gstd::value Func_SaveCommonDataAreaA1(gstd::script_machine* machine, int argc, const gstd::value* argv);
@@ -169,6 +172,39 @@ public:
 	static gstd::value Func_SetReplayUserData(gstd::script_machine* machine, int argc, const gstd::value* argv);
 	static gstd::value Func_IsReplayUserDataExists(gstd::script_machine* machine, int argc, const gstd::value* argv);
 	static gstd::value Func_SaveReplay(gstd::script_machine* machine, int argc, const gstd::value* argv);
+
+	// *****************
+		// RoEW SPECIFIC FUNCTIONS!
+		// *****************
+	static gstd::value Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_Regist(gstd::script_machine* machine, int argc, const gstd::value* argv);
+
+	static gstd::value Func_ObjMenu_GetParent(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetDisabled(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetRelatedObject(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetOptionIndex(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetOptionIndexX(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetMaxIndex(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetMaxIndexX(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetSliderValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetSliderMin(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetSliderMax(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetSliderIncr(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetOptionType(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetActionFlag(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetReturnValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
+
+	static gstd::value Func_ForceCloseAllMenus(gstd::script_machine* machine, int argc, const gstd::value* argv);
+
+	static gstd::value Func_ObjMenu_SetParent(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_AddRelatedObject(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_SetMaxIndex(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_SetMaxIndexX(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_SetSliderMax(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_SetSliderMin(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_SetSliderIncr(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_SetOptionType(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_SetReturnValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
 };
 
 //*******************************************************************

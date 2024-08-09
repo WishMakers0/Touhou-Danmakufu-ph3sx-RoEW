@@ -1,9 +1,9 @@
 #pragma once
-#include "../pch.h"
+#include "../../GcLib/pch.h"
 
-#include "../directx/DxObject.hpp"
-#include "../directx/DxScript.hpp"
-#include "../directx/DirectInput.hpp"
+#include "../../GcLib/directx/DxObject.hpp"
+#include "../../GcLib/directx/DxScript.hpp"
+#include "../../GcLib/directx/DirectInput.hpp"
 
 namespace directx {
 
@@ -145,6 +145,7 @@ namespace directx {
 
 	class DxMenuObjectManager : public DxScriptObjectBase {
 		friend DxScript;
+		friend StgControlScript;
 
 	protected:
 		std::vector<int> menuIDs;

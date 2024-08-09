@@ -6,7 +6,6 @@
 
 #include "DxConstant.hpp"
 #include "DxObject.hpp"
-#include "../RoEW/DxObjectRoEW.hpp"
 
 namespace directx {
 	//****************************************************************************
@@ -51,7 +50,7 @@ namespace directx {
 		static double g_posInvalidZ_;
 	protected:
 		std::shared_ptr<DxScriptObjectManager> objManager_;
-		std::shared_ptr<DxMenuObjectManager> menuManager_; // RoEW related
+		
 
 		DxScriptResourceCache* pResouceCache_;
 	public:
@@ -60,7 +59,6 @@ namespace directx {
 
 		void SetObjectManager(std::shared_ptr<DxScriptObjectManager> manager) { objManager_ = manager; }
 		std::shared_ptr<DxScriptObjectManager> GetObjectManager() { return objManager_; }
-		std::shared_ptr<DxMenuObjectManager> GetMenuObjectManager() { return menuManager_; } //RoEW
 
 		void SetMaxObject(size_t size) { objManager_->SetMaxObject(size); }
 		void SetRenderBucketCapacity(int capacity) { objManager_->SetRenderBucketCapacity(capacity); }
@@ -251,39 +249,6 @@ namespace directx {
 
 		//Other stuff
 		DNH_FUNCAPI_DECL_(Func_SetInvalidPositionReturn);
-
-		// *****************
-		// RoEW SPECIFIC FUNCTIONS!
-		// *****************
-		static gstd::value Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_Regist(gstd::script_machine* machine, int argc, const gstd::value* argv);
-
-		static gstd::value Func_ObjMenu_GetParent(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetDisabled(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetRelatedObject(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetOptionIndex(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetOptionIndexX(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetMaxIndex(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetMaxIndexX(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetSliderValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetSliderMin(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetSliderMax(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetSliderIncr(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetOptionType(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetActionFlag(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_GetReturnValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
-
-		static gstd::value Func_ForceCloseAllMenus(gstd::script_machine* machine, int argc, const gstd::value* argv);
-
-		static gstd::value Func_ObjMenu_SetParent(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_AddRelatedObject(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_SetMaxIndex(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_SetMaxIndexX(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_SetSliderMax(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_SetSliderMin(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_SetSliderIncr(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_SetOptionType(gstd::script_machine* machine, int argc, const gstd::value* argv);
-		static gstd::value Func_ObjMenu_SetReturnValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
 
 		//Dx関数：オブジェクト操作(共通)
 		static gstd::value Func_Obj_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);

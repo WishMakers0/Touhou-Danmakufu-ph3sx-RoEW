@@ -4,6 +4,7 @@
 #include "StgSystem.hpp"
 
 #include "../DnhExecutor/GcLibImpl.hpp"
+#include "./RoEW/DxObjectRoEW.hpp"
 
 //*******************************************************************
 //StgControlScriptManager
@@ -127,6 +128,37 @@ static const std::vector<function> stgControlFunction = {
 	{ "SetReplayUserData", StgControlScript::Func_SetReplayUserData, 2 },
 	{ "IsReplayUserDataExists", StgControlScript::Func_IsReplayUserDataExists, 2 },
 	{ "SaveReplay", StgControlScript::Func_SaveReplay, 2 },
+
+	// RoEW specific stuff!!
+	{ "ObjMenu_Create", StgControlScript::Func_ObjMenu_Create, 0 },
+	{ "ObjMenu_Regist", StgControlScript::Func_ObjMenu_Regist, 1 },
+
+	{ "ObjMenu_GetParent", StgControlScript::Func_ObjMenu_GetParent, 1 },
+	{ "ObjMenu_GetDisabled", StgControlScript::Func_ObjMenu_GetDisabled, 1 },
+	{ "ObjMenu_GetRelatedObject", StgControlScript::Func_ObjMenu_GetRelatedObject, 2 },
+	{ "ObjMenu_GetOptionIndex", StgControlScript::Func_ObjMenu_GetOptionIndex, 1 },
+	{ "ObjMenu_GetOptionIndexX", StgControlScript::Func_ObjMenu_GetOptionIndexX, 2 },
+	{ "ObjMenu_GetMaxIndex", StgControlScript::Func_ObjMenu_GetMaxIndex, 1 },
+	{ "ObjMenu_GetMaxIndexX", StgControlScript::Func_ObjMenu_GetMaxIndexX, 2 },
+	{ "ObjMenu_GetSliderValue", StgControlScript::Func_ObjMenu_GetSliderValue, 2 },
+	{ "ObjMenu_GetSliderMax", StgControlScript::Func_ObjMenu_GetSliderMax, 2 },
+	{ "ObjMenu_GetSliderMin", StgControlScript::Func_ObjMenu_GetSliderMin, 2 },
+	{ "ObjMenu_GetSliderIncr", StgControlScript::Func_ObjMenu_GetSliderIncr, 2 },
+	{ "ObjMenu_GetOptionType", StgControlScript::Func_ObjMenu_GetOptionType, 2 },
+	{ "ObjMenu_GetActionFlag", StgControlScript::Func_ObjMenu_GetActionFlag, 1 },
+	{ "ObjMenu_GetReturnValue", StgControlScript::Func_ObjMenu_GetReturnValue, 1 },
+
+	{ "ForceCloseAllMenus", StgControlScript::Func_ForceCloseAllMenus, 0 },
+
+	{ "ObjMenu_SetParent", StgControlScript::Func_ObjMenu_SetParent, 2 },
+	{ "ObjMenu_AddRelatedObject", StgControlScript::Func_ObjMenu_AddRelatedObject, 2 },
+	{ "ObjMenu_SetMaxIndex", StgControlScript::Func_ObjMenu_SetMaxIndex, 2 },
+	{ "ObjMenu_SetMaxIndexX", StgControlScript::Func_ObjMenu_SetMaxIndexX, 3 },
+	{ "ObjMenu_SetSliderMax", StgControlScript::Func_ObjMenu_SetSliderMax, 3 },
+	{ "ObjMenu_SetSliderMin", StgControlScript::Func_ObjMenu_SetSliderMin, 3 },
+	{ "ObjMenu_SetSliderIncr", StgControlScript::Func_ObjMenu_SetSliderIncr, 3 },
+	{ "ObjMenu_SetOptionType", StgControlScript::Func_ObjMenu_SetOptionType, 3 },
+	{ "ObjMenu_SetReturnValue", StgControlScript::Func_ObjMenu_SetReturnValue, 2 },
 };
 static const std::vector<constant> stgControlConstant = {
 	//Events
@@ -1139,6 +1171,339 @@ gstd::value StgControlScript::Func_SaveReplay(gstd::script_machine* machine, int
 	bool res = replayInfoActive->SaveToFile(infoMain->pathScript_, index);
 	return script->CreateBooleanValue(res);
 }
+
+// RoEW specific functions!!
+
+value StgControlScript::Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	ref_unsync_ptr<DxMenuObject> obj = new DxMenuObject();
+	int id = script->AddObject(obj);
+	return script->CreateIntValue(id);
+}
+
+value StgControlScript::Func_ObjMenu_Regist(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	obj->Activate();
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	manager->AddMenuID(id);
+
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_GetParent(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int pid = ID_INVALID;
+	if (obj) {
+		pid = obj->GetParent();
+	}
+	return script->CreateIntValue(pid);
+}
+
+value StgControlScript::Func_ObjMenu_GetDisabled(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	bool ret = false;
+	if (obj) {
+		ret = obj->GetDisabled();
+	}
+	return script->CreateBooleanValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetRelatedObject(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret_id = ID_INVALID;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret_id = obj->GetRelatedObject(index);
+	}
+	return script->CreateIntValue(ret_id);
+}
+
+value StgControlScript::Func_ObjMenu_GetOptionIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	if (obj) {
+		ret = obj->GetOptionIndex();
+	}
+	return script->CreateIntValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetOptionIndexX(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetOptionIndexX(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetMaxIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	if (obj) {
+		ret = obj->GetMaxIndex();
+	}
+	return script->CreateIntValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetMaxIndexX(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetMaxIndexX(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetSliderValue(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	float ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderValue(index);
+	}
+	return script->CreateFloatValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetSliderMin(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderMin(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetSliderMax(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderMax(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetSliderIncr(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	float ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderIncr(index);
+	}
+	return script->CreateFloatValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetOptionType(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	int ret = DEFAULT_INT;
+	int index = argv[1].as_int();
+	if (obj) {
+		ret = obj->GetSliderIncr(index);
+	}
+	return script->CreateIntValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetActionFlag(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	bool ret = false;
+	if (obj) {
+		ret = obj->GetActionFlag();
+	}
+	return script->CreateBooleanValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetReturnValue(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	gstd::value ret = value();
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	ret = manager->GetReturnValue(id);
+
+	return ret;
+}
+
+value StgControlScript::Func_ForceCloseAllMenus(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	for (const int& i : manager->menuIDs) { //woah, TIL C++ has range-based for loops, awesome
+		int id = i;
+		script->DeleteObject(id);
+	}
+	// I see little reason why this should fail, but I suppose I could eat those words later...
+	manager->menuIDs.clear();
+
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetParent(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int pid = argv[1].as_int();
+		DxMenuObject* parent = nullptr;
+		if (pid != ID_INVALID) {
+			parent = script->GetObjectPointerAs<DxMenuObject>(pid);
+		}
+		obj->SetParent(parent);
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_AddRelatedObject(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int obj_id = argv[1].as_int();
+		DxScriptObjectBase* obj_a = script->GetObjectPointer(obj_id);
+		if (obj_a) {
+			obj->AddRelatedObject(obj_a);
+		}
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetMaxIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int arg = argv[1].as_int();
+		obj->SetMaxIndex(arg);
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetMaxIndexX(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetMaxIndexX(index, arg);
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetSliderMax(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetSliderMax(index, arg);
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetSliderMin(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetSliderMin(index, arg);
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetSliderIncr(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		float arg = argv[2].as_float();
+		obj->SetSliderIncr(index, arg);
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetOptionType(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	if (obj) {
+		int index = argv[1].as_int();
+		int arg = argv[2].as_int();
+		obj->SetOptionType(index, arg);
+	}
+	return value();
+}
+
+value StgControlScript::Func_ObjMenu_SetReturnValue(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	gstd::value arg = argv[1];
+	std::shared_ptr<DxMenuObjectManager> manager = script->GetMenuObjectManager();
+	manager->SetReturnValue(id, arg);
+
+	return value();
+}
+
+// END: RoEW specific functions!!
 
 
 //*******************************************************************

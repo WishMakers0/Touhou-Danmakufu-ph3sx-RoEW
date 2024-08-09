@@ -10,7 +10,6 @@
 #include "DxText.hpp"
 #include "RenderObject.hpp"
 #include "DirectSound.hpp"
-#include "../RoEW/DxObjectRoEW.hpp"
 
 namespace directx {
 	class DxScript;

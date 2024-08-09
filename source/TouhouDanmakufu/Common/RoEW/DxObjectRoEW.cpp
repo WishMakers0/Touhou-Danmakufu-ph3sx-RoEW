@@ -1,8 +1,8 @@
 #include "source/GcLib/pch.h"
 
-#include "../directx/DxObject.hpp"
-#include "../directx/DxScript.hpp"
-#include "../directx/DirectInput.hpp"
+#include "../../GcLib/directx/DxObject.hpp"
+#include "../../GcLib/directx/DxScript.hpp"
+#include "../../GcLib/directx/DirectInput.hpp"
 
 using namespace directx;
 
