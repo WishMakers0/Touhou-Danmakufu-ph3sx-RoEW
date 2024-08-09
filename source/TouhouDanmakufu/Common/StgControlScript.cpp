@@ -1414,7 +1414,7 @@ value StgControlScript::Func_ObjMenu_AddRelatedObject(gstd::script_machine* mach
 		int obj_id = argv[1].as_int();
 		DxScriptObjectBase* obj_a = script->GetObjectPointer(obj_id);
 		if (obj_a) {
-			obj->AddRelatedObject(obj_a);
+			obj->AddRelatedObject(obj_id); //used to be obj_a
 		}
 	}
 	return value();

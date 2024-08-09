@@ -23,7 +23,8 @@ DxMenuObject::DxMenuObject() {
 }
 
 DxMenuObject::~DxMenuObject() {
-	for (auto& obj : relatedIDs) {
+	for (auto& id : relatedIDs) {
+		DxScriptObjectBase* obj = GetObjectFromID(id);
 		if (obj) { obj->QueueDelete(); }
 	}
 	if (parent) { parent->Enable(); }
@@ -36,14 +37,16 @@ void DxMenuObject::Activate() {
 }
 
 void DxMenuObject::Disable() {
-	for (auto& obj : relatedIDs) {
+	for (auto& id : relatedIDs) {
+		DxScriptObjectBase* obj = GetObjectFromID(id);
 		if (obj) { obj->SetVis(false); }
 	}
 	flags.disable = true;
 }
 
 void DxMenuObject::Enable() {
-	for (auto& obj : relatedIDs) {
+	for (auto& id : relatedIDs) {
+		DxScriptObjectBase* obj = GetObjectFromID(id);
 		if (obj) { obj->SetVis(true); }
 	}
 	flags.disable = false;

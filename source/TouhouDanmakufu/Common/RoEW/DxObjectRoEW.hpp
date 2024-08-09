@@ -78,7 +78,7 @@
 		gstd::ref_count_weak_ptr<DxMenuObject, false> parent;
 		unsigned int optionIndex;
 		unsigned int maxIndex;
-		std::vector<gstd::ref_count_weak_ptr<DxScriptObjectBase, false>> relatedIDs;
+		std::vector<int> relatedIDs;
 		std::map<unsigned int, unsigned int> optionIndexX;
 		std::map<unsigned int, int> maxIndexX;
 		std::map<unsigned int, float> sliderValue;
@@ -96,21 +96,11 @@
 		const static int scrollInterval = 10;
 		const static int scrollInterval_slider = 3;
 
+		DxScriptObjectBase* GetObjectFromID(int id) { return manager_->GetObjectPointer(id); }
+
 		void ProcessMenuInputs();
 		void OptionHandler();
 		void OptionHandler_Keyboard();
-		input_bitfield InitStaticBitfield() {
-			input_bitfield ret;
-			ret.left = false;
-			ret.right = false;
-			ret.up = false;
-			ret.down = false;
-			ret.shot = false;
-			ret.bomb = false;
-			ret.user1 = false;
-			ret.user2 = false;
-			return ret;
-		}
 
 	public:
 		DxMenuObject();
@@ -123,7 +113,7 @@
 
 		int GetParent() { return parent != nullptr ? parent->GetObjectID() : ID_INVALID; }
 		bool GetDisabled() { return flags.disable; }
-		int GetRelatedObject(unsigned int index) { return relatedIDs[index] != nullptr ? relatedIDs[index]->GetObjectID() : ID_INVALID; }
+		int GetRelatedObject(unsigned int index) { return relatedIDs[index];  }
 		int GetOptionIndex() { return optionIndex; }
 		int GetOptionIndexX(unsigned int index) { return optionIndexX[index]; }
 		int GetMaxIndex() { return maxIndex; }
@@ -136,10 +126,8 @@
 		bool GetActionFlag() { return flags.actionT; }
 
 		void SetParent(DxMenuObject* _p) { parent = _p; }
-		void AddRelatedObject(DxScriptObjectBase* _obj) {
-			gstd::ref_count_weak_ptr<DxScriptObjectBase, false> _o;
-			_o = _obj;
-			relatedIDs.push_back(_o);
+		void AddRelatedObject(int id) {
+			relatedIDs.push_back(id);
 		}
 		void SetOptionIndex(unsigned int _arg) { optionIndex = _arg; }
 		void SetMaxIndex(unsigned int _arg) { maxIndex = _arg; }
