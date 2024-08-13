@@ -3,6 +3,7 @@
 #include "../../../GcLib/directx/DxObject.hpp"
 #include "../../../GcLib/directx/DirectInput.hpp"
 #include "../StgControlScript.hpp"
+#include "../../../GcLib/gstd/Logger.hpp"
 
 //using namespace directx;
 
@@ -20,6 +21,7 @@ DxMenuObject::DxMenuObject() {
 	buttonTimer.insert({ KEY_USER1, 0 });
 	buttonTimer.insert({ KEY_USER2, 0 });
 	input = dynamic_cast<VirtualKeyManager*>(DirectInput::GetBase());
+	parent = ID_INVALID;
 }
 
 DxMenuObject::~DxMenuObject() {
@@ -27,14 +29,16 @@ DxMenuObject::~DxMenuObject() {
 		DxScriptObjectBase* obj = GetObjectFromID(id);
 		if (obj) { obj->QueueDelete(); }
 	}
-	if (parent) { parent->Enable(); }
+	DxMenuObject* p = GetParentFromID();
+	if (p) { p->Enable(); }
 }
 
 void DxMenuObject::Activate() {
 	//Only activate your menu object *after* you set up all the important parts!
 	bActive_ = true;
 	optionIndex = 0;
-	if (parent) { parent->Disable(); }
+	DxMenuObject* p = GetParentFromID();
+	if (p) { p->Disable(); }
 }
 
 void DxMenuObject::Disable() {
@@ -60,6 +64,7 @@ void DxMenuObject::Work() {
 	timer++;
 
 	ProcessMenuInputs();
+	OptionHandler();
 }
 
 void DxMenuObject::ProcessMenuInputs() {
@@ -136,21 +141,40 @@ void DxMenuObject::ProcessMenuInputs() {
 		buttonTimer[keys[7]] = 0;
 	}
 
+	/*
+	std::string msg = "";
+	msg = msg + "Left: " + (thisFrame.left ? "1" : "0") + ", ";
+	msg = msg + "Right: " + (thisFrame.right ? "1" : "0") + ", ";
+	msg = msg + "Up: " + (thisFrame.up ? "1" : "0") + ", ";
+	msg = msg + "Down: " + (thisFrame.down ? "1" : "0") + ", ";
+	msg = msg + "Shot: " + (thisFrame.shot ? "1" : "0") + ", ";
+	msg = msg + "Bomb: " + (thisFrame.bomb ? "1" : "0") + ", ";
+	msg = msg + "User1: " + (thisFrame.user1 ? "1" : "0") + ", ";
+	msg = msg + "User2: " + (thisFrame.user2 ? "1" : "0");
+	Logger::WriteTop(msg);
+	*/
+	// Just confirmed with Logger 8/13/2024 this works.  Any changes to this fxn since unconfirmed.
+	
 	lastKey = thisFrame;
 }
 
 void DxMenuObject::OptionHandler() {
+
 	flags.actionT = false;
 
 	// keeping this the same, would love to make it const, but meh
 	int16_t keys[8] = { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN,
 	KEY_SHOT, KEY_BOMB, KEY_USER1, KEY_USER2 };
 
-	if (optionType[optionIndex] == TYPE_KEYBOARD) {
+	/*
+	* if (optionType[optionIndex] == TYPE_KEYBOARD) {
 		OptionHandler_Keyboard();
 		return;
 	}
+	*/
 
+	// might want to consider some checking on value of optionType[optionIndex] using std::vector.at
+	
 	if (optionType[optionIndex] == TYPE_XAXIS) {
 		if (lastKey.left) {
 			if (((buttonTimer[keys[0]] > buttonDelay) && (buttonTimer[keys[0]] % scrollInterval == 0)) || (buttonTimer[keys[0]] == 1)) {
@@ -163,7 +187,8 @@ void DxMenuObject::OptionHandler() {
 			}
 		}
 	}
-	else if (optionType[optionIndex] == TYPE_SLIDER) {
+
+	if (optionType[optionIndex] == TYPE_SLIDER) {
 		float sVal = sliderValue[optionIndex];
 		int sMax = sliderMax[optionIndex];
 		int sMin = sliderMin[optionIndex];
@@ -183,13 +208,13 @@ void DxMenuObject::OptionHandler() {
 
 	// up/down/shot logic here
 	if (lastKey.up) {
-		if (((buttonTimer[keys[2]] > buttonDelay) && (buttonTimer[keys[2]] % scrollInterval_slider == 0)) || (buttonTimer[keys[2]] == 1)) {
+		if ( ((buttonTimer[keys[2]] > buttonDelay) && (buttonTimer[keys[2]] % scrollInterval == 0)) || (buttonTimer[keys[2]] == 1) ) {
 			optionIndex = (optionIndex - 1 + maxIndex) % maxIndex;
 		}
 	}
 
 	if (lastKey.down) {
-		if (((buttonTimer[keys[3]] > buttonDelay) && (buttonTimer[keys[3]] % scrollInterval_slider == 0)) || (buttonTimer[keys[3]] == 1)) {
+		if ( ((buttonTimer[keys[3]] > buttonDelay) && (buttonTimer[keys[3]] % scrollInterval == 0)) || (buttonTimer[keys[3]] == 1) ) {
 			optionIndex = (optionIndex + 1) % maxIndex;
 		}
 	}
@@ -206,7 +231,7 @@ void DxMenuObject::OptionHandler() {
 				optionIndex = maxIndex - 1;
 			}
 			else {
-				if (parent != nullptr) {
+				if (GetParentFromID() != nullptr) {
 					manager_->DeleteObject(this);
 				}
 			}

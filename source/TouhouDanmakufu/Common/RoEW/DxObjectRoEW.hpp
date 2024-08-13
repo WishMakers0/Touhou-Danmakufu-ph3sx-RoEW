@@ -41,6 +41,8 @@
 		//gstd::script_machine* machine;
 		//gstd::value idObjectValue_;
 		// Rest in peace, the Jank-o-tron 9000.  We hardly knew ye.
+
+
 		struct flag_bitfield {
 			bool disable : 1;
 			bool error : 1;
@@ -65,7 +67,7 @@
 		};
 		// This syntax for flag storage is actually absurdly helpful.
 		// Vastly prefer it to normal bitfields with bitwise arithmetic...
-		flag_bitfield flags;
+		
 		int timer;
 		enum t_option {
 			TYPE_INVALID = 0,
@@ -75,7 +77,7 @@
 			TYPE_MAIN = 4,
 			TYPE_NORMAL = 5
 		};
-		gstd::ref_count_weak_ptr<DxMenuObject, false> parent;
+		int parent; //object ID instead of pointers, safer
 		unsigned int optionIndex;
 		unsigned int maxIndex;
 		std::vector<int> relatedIDs;
@@ -88,6 +90,7 @@
 		std::vector<t_option> optionType;
 		std::map<int16_t, int> buttonTimer;
 		input_bitfield lastKey; //wanted it to be static but C++ is a big meanie
+		flag_bitfield flags;
 		std::wstring keyboardInput;
 		uint64_t keyboardButtonValue = std::numeric_limits<uint64_t>::max() - 1;
 		VirtualKeyManager* input;
@@ -97,6 +100,7 @@
 		const static int scrollInterval_slider = 3;
 
 		DxScriptObjectBase* GetObjectFromID(int id) { return manager_->GetObjectPointer(id); }
+		DxMenuObject* GetParentFromID() { return dynamic_cast<DxMenuObject*>(manager_->GetObjectPointer(parent)); } //GetObjectPointerAs is just a dynamic cast...
 
 		void ProcessMenuInputs();
 		void OptionHandler();
@@ -111,7 +115,7 @@
 		void Enable();
 		void Disable();
 
-		int GetParent() { return parent != nullptr ? parent->GetObjectID() : ID_INVALID; }
+		int GetParent() { return GetParentFromID() != nullptr ? parent : ID_INVALID; }
 		bool GetDisabled() { return flags.disable; }
 		int GetRelatedObject(unsigned int index) { return relatedIDs[index];  }
 		int GetOptionIndex() { return optionIndex; }
@@ -125,19 +129,21 @@
 		int GetOptionType(unsigned int index) { return (int)optionType[index]; }
 		bool GetActionFlag() { return flags.actionT; }
 
-		void SetParent(DxMenuObject* _p) { parent = _p; }
+		void SetParent(int _p) { parent = _p; }
 		void AddRelatedObject(int id) {
 			relatedIDs.push_back(id);
 		}
 		void SetOptionIndex(unsigned int _arg) { optionIndex = _arg; }
-		void SetMaxIndex(unsigned int _arg) { maxIndex = _arg; }
+		void SetMaxIndex(unsigned int _arg) { maxIndex = _arg; optionType.resize(_arg, TYPE_INVALID); }
 		void SetOptionIndexX(unsigned int index, unsigned int _a2) { optionIndexX[index] = _a2; }
 		void SetMaxIndexX(unsigned int index, unsigned int _a2) { maxIndexX[index] = _a2; }
 		void SetSliderValue(unsigned int index, float f) { sliderValue[index] = f; }
 		void SetSliderMax(unsigned int index, int val) { sliderMax[index] = val; }
 		void SetSliderMin(unsigned int index, int val) { sliderMin[index] = val; }
 		void SetSliderIncr(unsigned int index, float f) { sliderIncr[index] = f; }
-		void SetOptionType(unsigned int index, int val) { optionIndex = static_cast<t_option>(val); }
+		//note to self: does not work like std::map.  optionType[index] here is undefined behavior without resizing first!!
+		//menus need to run SetMaxIndex first anyway, so I'll put resize there.
+		void SetOptionType(unsigned int index, int val) { optionType[index] = static_cast<t_option>(val); } 
 
 	};
 

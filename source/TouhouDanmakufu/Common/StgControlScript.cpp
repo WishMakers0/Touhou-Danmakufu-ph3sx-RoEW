@@ -1396,11 +1396,13 @@ value StgControlScript::Func_ObjMenu_SetParent(gstd::script_machine* machine, in
 	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
 	if (obj) {
 		int pid = argv[1].as_int();
+		/*
 		DxMenuObject* parent = nullptr;
 		if (pid != ID_INVALID) {
 			parent = script->GetObjectPointerAs<DxMenuObject>(pid);
 		}
-		obj->SetParent(parent);
+		*/
+		obj->SetParent(pid);
 	}
 	return value();
 }
