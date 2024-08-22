@@ -1,0 +1,109 @@
+
+----------------------------------------------> [Menu Object Fxns] <----------------------------------------------
+
+	ObjMenu_Create
+			Arguments:
+				N/A
+			Returns:
+				int - object id
+			Description:
+				Creates a menu object with uninitialized variables
+
+	ObjMenu_Regist
+			Arguments:
+				1) object ID
+			Returns:
+				N/A
+			Description:
+				Activates the menu.
+				This is only safe to run AFTER the parameters have all been set properly!!
+				If you don't, expect DNH to crash abruptly.
+
+	ForceCloseAllMenus
+		Arguments:
+				N/A
+			Returns:
+				N/A
+			Description:
+				Refers to the menu manager internal structure to get all active object IDs of menus and delete them.
+				This also clears the menu manager structure of previously stored IDs and return values (?)
+				This is run when the stg scene starts to clear the main menu leftovers.
+
+	[---------------------------> Getters and Setters <---------------------------]
+
+	ObjMenu_AddRelatedObject(int menu, int obj)
+	Arguments:
+				1) menu object ID
+				2) attached object ID
+			Returns:
+				N/A
+			Description:
+				This adds an object to the "related objects" pool of the menu.
+				Related objects are deleted when the menu is deleted, and invisible when the menu is disabled.
+				They are put into an internal array, and you are expected to know which index lines up with which object.
+				The array is empty on initialization so the first index will be 0.
+				(To make your life easier, just use a task and don't use these aside from initial addition.  This is mostly from the time when I was using function pointers to methods for different parts of the menu's operation.  The automatic functionality is nice for cleanup, but you shouldn't need to use the getter for this.)
+	ObjMenu_GetRelatedObject(int menu, int index) - Returns: int - object ID
+		- Choosing an invalid index WILL crash DNH!
+
+	ObjMenu_GetActionFlag(int menu)
+		Arguments:
+				1) object ID
+			Returns:
+				bool
+			Description:
+				Relevant when running a menu loop to be able to get if shot/confirm was ever pressed on a given frame!!
+				(This is so you don't have to do the input handling yourself for every menu...)
+				This is really the only way to actually *activate* a menu option, so be sure to use it there!!
+
+	ObjMenu_SetParent(int obj, int obj2) 
+	ObjMenu_GetParent(int obj) - Returns: int - object id
+	ObjMenu_GetDisabled(int obj) - Returns: bool
+
+	ObjMenu_GetOptionIndex(int obj) - Returns: int
+	ObjMenu_GetOptionIndexX(int obj, int optionIndex) - Returns: int
+
+	ObjMenu_SetMaxIndex(int obj, int maxIndex)
+	ObjMenu_GetMaxIndex(int obj) - Returns: int
+	ObjMenu_SetMaxIndexX(int obj, int optionIndex, int maxIndex)
+	ObjMenu_GetMaxIndexX(int obj, int optionIndex) - Returns: int
+
+	ObjMenu_GetSliderValue(int obj, int optionIndex) - Returns: float
+	- Slider values are float but with integer caps.  Provided you don't set the min/max in such a way that float arithmetic breaks the world, it should be fine.
+	ObjMenu_SetSliderMax(int obj, int optionIndex, int sliderMax)
+	ObjMenu_GetSliderMax(int obj, int optionIndex) - Returns: int
+	ObjMenu_SetSliderMin(int obj, int optionIndex, int sliderMin)
+	ObjMenu_GetSliderMin(int obj, int optionIndex) - Returns: int
+	ObjMenu_SetSliderIncr(int obj, int optionIndex, float sliderIncr) - How much to increment the slider by per input.  Defaults to 1.0.
+	ObjMenu_GetSliderIncr(int obj, int optionIndex) - Returns: float
+
+	ObjMenu_SetOptionType(int obj, int optionIndex, int optionType)
+		- optionType is expected to be one of a few constants:
+		MENU_TYPE_INVALID - 0
+		MENU_TYPE_KEYBOARD - 1
+		MENU_TYPE_XAXIS - 2
+		MENU_TYPE_SLIDER - 3
+		MENU_TYPE_MAIN - 4
+		MENU_TYPE_NORMAL - 5
+
+		NORMAL is the most plain option.  Its logic doesn't use anything with the x axis or with pressing left and right.
+		MAIN is primarily intended for just the main menu of the package.  Its behavior is identical to NORMAL, save for the bomb/cancel button.
+			On a NORMAL menu, the bomb button will close the menu outright, but on a MAIN menu, it goes to the last index, which is presumed to be a cancel index.
+		XAXIS allows for the menu to be able to move across the horizontal axis for that particular optionIndex.
+			Be sure to set MaxIndexX for that row for the same reason you'd set MaxIndex normally!
+		SLIDER is similar to xaxis, but has floating point values and special behavior for moving faster when holding left/right.
+			This is meant to account for things like volume sliders and the like, will probably be used sparingly.
+		KEYBOARD allows for the use of keyboard input when its optionIndex is selected, and normally these kinds of menus will only have one.
+			(Currently this code is incomplete as of 8/22/2024.)
+		INVALID is a placeholder with no specific behavior data and an incorrectly configured menu should result in this type (in the future)
+
+	ObjMenu_GetOptionType(int obj, int optionIndex) - Returns: int
+
+	ObjMenu_SetReturnValue(int menu, <any> value) - Returns: N/A
+	- This is used in conjunction with an internal menu structure to be able to get a value to return *after* the menu itself has already been deleted with the same ID.  It's not overwritten per ID, so this part of the data structure will slowly grow until the game is closed or it's flushed (ForceCloseAllMenus?)
+	- Similar to related objects, this might not be necessary, but it was implemented just in case it would be useful.  It might also be useful for keyboard menus to return their string.
+
+	ObjMenu_GetReturnValue(int menu) - Returns: <any> - depends on what was set prior.
+
+----------------------------------------------> [Base Script] <----------------------------------------------
+
