@@ -60,7 +60,11 @@ void DxMenuObject::Enable() {
 void DxMenuObject::Work() {
 	// Do stuff
 	if (!bActive_) { return; }
-	if (flags.disable) { return; }
+	if (flags.disable) {
+		flags.actionT = false;
+		timer = 0;
+		return; 
+	}
 	timer++;
 
 	ProcessMenuInputs();
@@ -72,6 +76,10 @@ void DxMenuObject::ProcessMenuInputs() {
 
 	int16_t keys[8] = { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN,
 	KEY_SHOT, KEY_BOMB, KEY_USER1, KEY_USER2 };
+
+	if (timer < 5) {
+		return;
+	}
 
 	//there's probably an efficient loop I can make for this but I don't feel like it...
 	//nvm yes i do
@@ -220,13 +228,13 @@ void DxMenuObject::OptionHandler() {
 	}
 
 	if (lastKey.shot) {
-		if ((buttonTimer[keys[4]] == 1) && (timer > 5)) {
+		if ((buttonTimer[keys[4]] == 1) && (timer > 30)) {
 			flags.actionT = true;
 		}
 	}
 
 	if (lastKey.bomb) {
-		if ((buttonTimer[keys[5]] == 1) && (timer > 5)) {
+		if ((buttonTimer[keys[5]] == 1) && (timer > 30)) {
 			if (optionType[optionIndex] == TYPE_MAIN) {
 				optionIndex = maxIndex - 1;
 			}
