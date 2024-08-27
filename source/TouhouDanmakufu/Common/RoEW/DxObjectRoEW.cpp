@@ -11,6 +11,7 @@
 
 DxMenuObject::DxMenuObject() {
 	timer = 0;
+	typeObject_ = TypeObject::Menu;
 	// set up buttonTimer correctly
 	buttonTimer.insert({ KEY_LEFT, 0 });
 	buttonTimer.insert({ KEY_RIGHT, 0 });

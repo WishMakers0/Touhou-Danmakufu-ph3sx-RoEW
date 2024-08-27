@@ -536,6 +536,7 @@ static const std::vector<constant> dxConstant = {
 	constant("ID_INVALID", DxScript::ID_INVALID),
 	constant("DEFAULT_INT", DxScript::DEFAULT_INT),
 	constant("OBJ_BASE", (int)TypeObject::Base),
+	constant("OBJ_MENU", (int)TypeObject::Menu),
 	constant("OBJ_PRIMITIVE_2D", (int)TypeObject::Primitive2D),
 	constant("OBJ_SPRITE_2D", (int)TypeObject::Sprite2D),
 	constant("OBJ_SPRITE_LIST_2D", (int)TypeObject::SpriteList2D),
@@ -572,6 +573,7 @@ static const std::vector<constant> dxConstant = {
 	constant("BLEND_SHADOW", BlendMode::MODE_BLEND_SHADOW),
 	constant("BLEND_INV_DESTRGB", BlendMode::MODE_BLEND_INV_DESTRGB),
 	constant("BLEND_ALPHA_INV", BlendMode::MODE_BLEND_ALPHA_INV),
+	constant("BLEND_MASK", BlendMode::MODE_BLEND_MASK),
 
 	//Cull modes
 	constant("CULL_NONE", D3DCULL_NONE),

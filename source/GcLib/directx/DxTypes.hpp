@@ -34,6 +34,7 @@ namespace directx {
 		MODE_BLEND_SHADOW,		//Invert-multiply blending
 		MODE_BLEND_INV_DESTRGB,	//Difference blending in Ph*tosh*p
 		MODE_BLEND_ALPHA_INV,	//Alpha blending, but the source color is inverted
+		MODE_BLEND_MASK,		//Alpha rendering, but masking out alpha underneath it.
 
 		RESET = 0xff,
 	} BlendMode;
@@ -107,6 +108,7 @@ namespace directx {
 		FileBinary,
 
 		Base,
+		Menu,
 
 		//------------------------------
 
