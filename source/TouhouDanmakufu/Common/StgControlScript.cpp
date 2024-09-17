@@ -130,6 +130,10 @@ static const std::vector<function> stgControlFunction = {
 	{ "SaveReplay", StgControlScript::Func_SaveReplay, 2 },
 
 	// RoEW specific stuff!!
+	{ "SetSkipRate", StgControlScript::Func_SetSkipRate, 1 },
+	{ "SetStdFrameRate", StgControlScript::Func_SetStdFrameRate, 1 },
+	{ "ToggleSkipMode", StgControlScript::Func_ToggleSkipMode, 1 },
+
 	{ "ObjMenu_Create", StgControlScript::Func_ObjMenu_Create, 0 },
 	{ "ObjMenu_Regist", StgControlScript::Func_ObjMenu_Regist, 1 },
 
@@ -212,6 +216,14 @@ static const std::vector<constant> stgControlConstant = {
 	constant("RESULT_END", StgControlScript::RESULT_END),
 	constant("RESULT_RETRY", StgControlScript::RESULT_RETRY),
 	constant("RESULT_SAVE_REPLAY", StgControlScript::RESULT_SAVE_REPLAY),
+
+	// RoEW!!
+	constant("MENU_TYPE_INVALID", 0),
+	constant("MENU_TYPE_KEYBOARD", 1),
+	constant("MENU_TYPE_XAXIS", 2),
+	constant("MENU_TYPE_SLIDER", 3),
+	constant("MENU_TYPE_MAIN", 4),
+	constant("MENU_TYPE_NORMAL", 5),
 };
 
 StgControlScript::StgControlScript(StgSystemController* systemController) {
@@ -1174,7 +1186,60 @@ gstd::value StgControlScript::Func_SaveReplay(gstd::script_machine* machine, int
 	return script->CreateBooleanValue(res);
 }
 
+/*
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+* 
+*/
 // RoEW specific functions!!
+
+value StgControlScript::Func_SetSkipRate(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	int newRate = argv[0].as_int();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	config->fastModeSpeed_ = newRate;
+
+	EFpsController* fpsControl = EFpsController::GetInstance();
+	fpsControl->SetFastModeRate(newRate);
+
+	return value();
+}
+
+value StgControlScript::Func_SetStdFrameRate(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	int newFps = argv[0].as_int();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	config->fpsStandard_ = newFps;
+
+	EFpsController* fpsControl = EFpsController::GetInstance();
+	fpsControl->SetFps(newFps);
+
+	return value();
+}
+
+value StgControlScript::Func_ToggleSkipMode(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	bool fastMode = argv[0].as_boolean();
+
+	EFpsController* fpsControl = EFpsController::GetInstance();
+	fpsControl->SetFastMode(fastMode);
+
+	return value();
+}
 
 value StgControlScript::Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const value* argv) {
 	StgControlScript* script = (StgControlScript*)machine->data;

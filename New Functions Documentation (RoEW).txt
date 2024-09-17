@@ -1,4 +1,35 @@
 
+-----------------------------------------------> [Standard Fxns] <------------------------------------------------
+
+	SetSkipRate
+			Arguments:
+				1) frame rate (int)
+			Returns:
+				N/A
+			Description:
+				Sets the frame rate of skip mode, both by using ToggleSkipMode and the normal skip key.
+				Make sure to set it above 60, because otherwise it won't be very useful to you.
+
+	SetStdFrameRate
+			Arguments:
+				1) frame rate (int)
+			Returns:
+				N/A
+			Description:
+				Sets the normal game frame rate.  Default value is 60.
+				For obvious reasons, don't set it to 0.
+				This can be used to "underclock" the game, making something resembling pseudo-slow,
+				or you can speed the game up to higher than 60fps without being stuck in skip mode.
+
+	ToggleSkipMode
+			Arguments:
+				1) bool
+			Returns:
+				N/A
+			Description:
+				Turns on or off skip mode via script, instead of the hardcoded skip key functionality.
+
+
 ----------------------------------------------> [Menu Object Fxns] <----------------------------------------------
 
 	ObjMenu_Create

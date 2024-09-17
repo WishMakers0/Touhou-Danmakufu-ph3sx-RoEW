@@ -174,9 +174,21 @@ public:
 	static gstd::value Func_IsReplayUserDataExists(gstd::script_machine* machine, int argc, const gstd::value* argv);
 	static gstd::value Func_SaveReplay(gstd::script_machine* machine, int argc, const gstd::value* argv);
 
+	
+
 	// *****************
 		// RoEW SPECIFIC FUNCTIONS!
 		// *****************
+	static gstd::value Func_SetSkipRate(gstd::script_machine* machine, int argc, const value* argv);
+	static gstd::value Func_SetStdFrameRate(gstd::script_machine* machine, int argc, const value* argv);
+	static gstd::value Func_ToggleSkipMode(gstd::script_machine* machine, int argc, const value* argv);
+
+	//static gstd::value Func_Config_GetVKeyMap(gstd::script_machine* machine, int argc, const value* argv);
+	//static gstd::value Func_Config_GetResIndex(gstd::script_machine* machine, int argc, const value* argv);
+	//static gstd::value Func_Config_GetFullscreen(gstd::script_machine* machine, int argc, const value* argv);
+	//static gstd::value Func_Config_GetVsync(gstd::script_machine* machine, int argc, const value* argv);
+	//static gstd::value Func_Config_GetPseudoFs(gstd::script_machine* machine, int argc, const value* argv);
+
 	static gstd::value Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);
 	static gstd::value Func_ObjMenu_Regist(gstd::script_machine* machine, int argc, const gstd::value* argv);
 

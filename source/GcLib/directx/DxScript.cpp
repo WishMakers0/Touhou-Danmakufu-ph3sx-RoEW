@@ -801,13 +801,6 @@ static const std::vector<constant> dxConstant = {
 	constant("KEY_APPS", DIK_APPS),
 	constant("KEY_POWER", DIK_POWER),
 	constant("KEY_SLEEP", DIK_SLEEP),
-
-	constant("MENU_TYPE_INVALID", 0),
-	constant("MENU_TYPE_KEYBOARD", 1),
-	constant("MENU_TYPE_XAXIS", 2),
-	constant("MENU_TYPE_SLIDER", 3),
-	constant("MENU_TYPE_MAIN", 4),
-	constant("MENU_TYPE_NORMAL", 5),
 };
 
 double DxScript::g_posInvalidX_ = 0;
