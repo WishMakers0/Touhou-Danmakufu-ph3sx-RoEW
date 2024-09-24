@@ -134,6 +134,20 @@ static const std::vector<function> stgControlFunction = {
 	{ "SetStdFrameRate", StgControlScript::Func_SetStdFrameRate, 1 },
 	{ "ToggleSkipMode", StgControlScript::Func_ToggleSkipMode, 1 },
 
+	{ "Config_SetVkeyMap", StgControlScript::Func_Config_SetVKeyMap, 4 },
+	{ "Config_SetResIndex", StgControlScript::Func_Config_SetResIndex, 1 },
+	{ "Config_SetFullscreen", StgControlScript::Func_Config_SetFullscreen, 1 },
+	{ "Config_SetVsync", StgControlScript::Func_Config_SetVsync, 1 },
+	{ "Config_SetPseudoFs", StgControlScript::Func_Config_SetPseudoFs, 1 },
+
+	{ "Config_GetVkeyMap", StgControlScript::Func_Config_GetVKeyMap, 1 },
+	{ "Config_GetResIndex", StgControlScript::Func_Config_GetResIndex, 0 },
+	{ "Config_GetFullscreen", StgControlScript::Func_Config_GetFullscreen, 0 },
+	{ "Config_GetVsync", StgControlScript::Func_Config_GetVsync, 0 },
+	{ "Config_GetPseudoFs", StgControlScript::Func_Config_GetPseudoFs, 0 },
+
+	{ "SaveConfigFile", StgControlScript::Func_SaveConfigFile, 0 },
+
 	{ "ObjMenu_Create", StgControlScript::Func_ObjMenu_Create, 0 },
 	{ "ObjMenu_Regist", StgControlScript::Func_ObjMenu_Regist, 1 },
 
@@ -1240,6 +1254,22 @@ value StgControlScript::Func_ToggleSkipMode(gstd::script_machine* machine, int a
 
 	return value();
 }
+
+value StgControlScript::Func_Config_SetVKeyMap(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	int16_t keycode = argv[0].as_int();
+	int16_t newKey = argv[1].as_int();
+	int16_t newPadButton = argv[2].as_int();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	ref_count_ptr<VirtualKey> vkey = config->mapKey_[keycode];
+	vkey->SetKeyCode(newKey);
+	vkey->SetPadButton(newPadButton);
+
+	return value();
+}
+
 
 value StgControlScript::Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const value* argv) {
 	StgControlScript* script = (StgControlScript*)machine->data;
