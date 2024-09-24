@@ -7,6 +7,7 @@
 #include "DxObject.hpp"
 #include "DirectInput.hpp"
 #include "MetasequoiaMesh.hpp"
+#include "ObjMtlMesh.hpp"
 //#include "ElfreinaMesh.hpp"
 
 using namespace gstd;
@@ -4450,6 +4451,10 @@ value DxScript::Func_ObjMesh_Load(script_machine* machine, int argc, const value
 			std::wstring ext = PathProperty::GetFileExtension(path);
 			if (ext == L".mqo") {
 				mesh = std::make_shared<MetasequoiaMesh>();
+				res = mesh->CreateFromFile(path);
+			}
+			else if (ext == L".obj") {
+				mesh = std::make_shared<ObjMtlMesh>();
 				res = mesh->CreateFromFile(path);
 			}
 			/*
