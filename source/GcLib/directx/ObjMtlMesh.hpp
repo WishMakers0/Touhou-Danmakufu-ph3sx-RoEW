@@ -7,6 +7,8 @@ namespace directx {
 	//*******************************************************************
 	//ObjMtlMesh
 	//*******************************************************************
+	// http://www.metaseq.net/en/format.html
+	// https://www.cs.cmu.edu/~mbz/personal/graphics/obj.html
 	class ObjMtlMesh;
 	class ObjMtlMeshData : public DxMeshData {
 		friend ObjMtlMesh;
