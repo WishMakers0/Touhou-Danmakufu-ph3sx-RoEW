@@ -166,6 +166,7 @@ static const std::vector<function> stgControlFunction = {
 	{ "ObjMenu_GetOptionType", StgControlScript::Func_ObjMenu_GetOptionType, 2 },
 	{ "ObjMenu_GetActionFlag", StgControlScript::Func_ObjMenu_GetActionFlag, 1 },
 	{ "ObjMenu_GetReturnValue", StgControlScript::Func_ObjMenu_GetReturnValue, 1 },
+	{ "ObjMenu_GetKeyboardInput", StgControlScript::Func_ObjMenu_GetKeyboardInput, 1 },
 
 	{ "ForceCloseAllMenus", StgControlScript::Func_ForceCloseAllMenus, 0 },
 

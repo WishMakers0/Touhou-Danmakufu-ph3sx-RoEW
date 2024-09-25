@@ -69,7 +69,12 @@ void DxMenuObject::Work() {
 	timer++;
 
 	ProcessMenuInputs();
-	OptionHandler();
+	if (optionType.at(0) == TYPE_KEYBOARD) {
+		OptionHandler_Keyboard();
+	}
+	else {
+		OptionHandler();
+	}
 }
 
 void DxMenuObject::ProcessMenuInputs() {
@@ -175,12 +180,6 @@ void DxMenuObject::OptionHandler() {
 	int16_t keys[8] = { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN,
 	KEY_SHOT, KEY_BOMB, KEY_USER1, KEY_USER2 };
 
-	
-	if (optionType[optionIndex] == TYPE_KEYBOARD) {
-		OptionHandler_Keyboard();
-		return;
-	}
-	
 
 	// might want to consider some checking on value of optionType[optionIndex] using std::vector.at
 	
@@ -256,6 +255,7 @@ void DxMenuObject::OptionHandler_Keyboard() {
 	int16_t numberKeys[10] =	{DIK_0, DIK_1, DIK_2, DIK_3, DIK_4, DIK_5, DIK_6, DIK_7, DIK_8, DIK_9};
 	wchar_t charCode = 0x00;
 	const uint64_t ONE = 1;
+	Logger::WriteTop(L"OptionHandler_Keyboard: " + std::to_wstring(keyboardButtonValue));
 
 	for (uint64_t i = 0; i < 26; i++) {
 		uint64_t power_2_i = ONE << i;
@@ -294,9 +294,12 @@ void DxMenuObject::OptionHandler_Keyboard() {
 	else if (input->GetKeyState(DIK_RETURN) == KEY_PUSH) {
 		flags.actionT = true;
 	}
-	else {
-		std::wstring newChar(1, charCode);
-		keyboardInput = keyboardInput + newChar;
+	else if (timer > 5) {
+		std::wstring newChar = L"";
+		newChar.push_back(charCode);
+		if (charCode != 0x00) {
+			keyboardInput = keyboardInput + newChar;
+		}
 	}
 }
 

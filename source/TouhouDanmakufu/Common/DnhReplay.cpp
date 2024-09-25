@@ -44,7 +44,10 @@ bool ReplayInformation::IsUserDataExists(const std::string& key) {
 bool ReplayInformation::SaveToFile(const std::wstring& scriptPath, std::wstring fileName) {
 	std::wstring dir = EPathProperty::GetReplaySaveDirectory(scriptPath);
 	std::wstring scriptName = PathProperty::GetFileNameWithoutExtension(scriptPath);
-	std::wstring path = dir + fileName_ + L".rpy";
+	if (fileName == L"") {
+		fileName = L"NoName";
+	}
+	std::wstring path = dir + L"NoName" + L".rpy";
 	//std::wstring path = dir + scriptName + StringUtility::Format(L"_replay%02d.dat", index); //NOOOOOOOO ok time to undo
 
 	//フォルダ作成

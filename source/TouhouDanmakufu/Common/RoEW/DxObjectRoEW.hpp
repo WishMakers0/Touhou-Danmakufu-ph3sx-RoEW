@@ -92,7 +92,7 @@
 		input_bitfield lastKey; //wanted it to be static but C++ is a big meanie
 		flag_bitfield flags;
 		std::wstring keyboardInput;
-		uint64_t keyboardButtonValue = std::numeric_limits<uint64_t>::max() - 1;
+		uint64_t keyboardButtonValue = 0; //std::numeric_limits<uint64_t>::max() - 1;
 		VirtualKeyManager* input;
 
 		const static int buttonDelay = 30;
