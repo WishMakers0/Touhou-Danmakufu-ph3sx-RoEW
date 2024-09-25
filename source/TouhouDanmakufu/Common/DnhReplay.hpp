@@ -48,7 +48,9 @@ public:
 	std::wstring& GetComment() { return comment_; }
 	void SetComment(const std::wstring& comment) { comment_ = comment; }
 	std::wstring& GetUserName() { return userName_; }
-	void SetUserName(const std::wstring& name) { userName_ = name; fileName_ = name; }
+	void SetUserName(const std::wstring& name) { userName_ = name; }
+	std::wstring& GetFileName() { return fileName_; }
+	void SetFileName(const std::wstring& name) { fileName_ = name; }
 	int64_t GetTotalScore() { return totalScore_; }
 	void SetTotalScore(int64_t score) { totalScore_ = score; }
 	double GetAverageFps() { return fpsAverage_; }
@@ -65,7 +67,7 @@ public:
 	void SetStageData(int stage, ref_count_ptr<StageData> data) { mapStageData_[stage] = data; }
 	std::vector<int> GetStageIndexList();
 
-	bool SaveToFile(const std::wstring& scriptPath, int index);
+	bool SaveToFile(const std::wstring& scriptPath, std::wstring fileName);
 	static ref_count_ptr<ReplayInformation> CreateFromFile(std::wstring scriptPath, std::wstring fileName);
 	static ref_count_ptr<ReplayInformation> CreateFromFile(std::wstring path);
 };

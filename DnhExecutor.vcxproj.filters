@@ -215,6 +215,9 @@
     <ClCompile Include="source\TouhouDanmakufu\Common\RoEW\DxObjectRoEW.cpp">
       <Filter>source\Common\RoEW</Filter>
     </ClCompile>
+    <ClCompile Include="source\GcLib\directx\ObjMtlMesh.cpp">
+      <Filter>source\GcLib\directx\Mesh</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\GcLib\gstd\Application.hpp">
@@ -432,6 +435,9 @@
     </ClInclude>
     <ClInclude Include="source\TouhouDanmakufu\Common\RoEW\DxObjectRoEW.hpp">
       <Filter>source\Common\RoEW</Filter>
+    </ClInclude>
+    <ClInclude Include="source\GcLib\directx\ObjMtlMesh.hpp">
+      <Filter>source\GcLib\directx\Mesh</Filter>
     </ClInclude>
   </ItemGroup>
   <ItemGroup>

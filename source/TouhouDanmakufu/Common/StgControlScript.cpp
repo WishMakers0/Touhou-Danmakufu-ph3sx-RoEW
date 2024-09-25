@@ -133,7 +133,7 @@ static const std::vector<function> stgControlFunction = {
 	{ "SetSkipRate", StgControlScript::Func_SetSkipRate, 1 },
 	{ "SetStdFrameRate", StgControlScript::Func_SetStdFrameRate, 1 },
 	{ "ToggleSkipMode", StgControlScript::Func_ToggleSkipMode, 1 },
-
+	/*
 	{ "Config_SetVkeyMap", StgControlScript::Func_Config_SetVKeyMap, 4 },
 	{ "Config_SetResIndex", StgControlScript::Func_Config_SetResIndex, 1 },
 	{ "Config_SetFullscreen", StgControlScript::Func_Config_SetFullscreen, 1 },
@@ -147,6 +147,7 @@ static const std::vector<function> stgControlFunction = {
 	{ "Config_GetPseudoFs", StgControlScript::Func_Config_GetPseudoFs, 0 },
 
 	{ "SaveConfigFile", StgControlScript::Func_SaveConfigFile, 0 },
+	*/
 
 	{ "ObjMenu_Create", StgControlScript::Func_ObjMenu_Create, 0 },
 	{ "ObjMenu_Regist", StgControlScript::Func_ObjMenu_Regist, 1 },
@@ -1012,7 +1013,7 @@ gstd::value StgControlScript::Func_GetValidReplayIndices(gstd::script_machine* m
 	ref_count_ptr<StgControlScriptInformation> infoControlScript = script->systemController_->GetControlScriptInformation();
 	ref_count_ptr<ReplayInformationManager> replayInfoManager = infoControlScript->GetReplayInformationManager();
 
-	std::vector<int> listValidIndices = replayInfoManager->Get!ndexList();
+	std::vector<int> listValidIndices = replayInfoManager->GetIndexList();
 	return script->CreateIntArrayValue(listValidIndices);
 }
 gstd::value StgControlScript::Func_IsValidReplayIndex(gstd::script_machine* machine, int argc, const gstd::value* argv) {
@@ -1049,9 +1050,7 @@ gstd::value StgControlScript::Func_GetReplayInfo(gstd::script_machine* machine, 
 	std::wstring index = argv[0].as_string();
 	int type = argv[1].as_int();
 
-	ref_count_ptr<ReplayInformation> replayInfo;
-	if (StringUtility::ToInteger(index) == ReplayInformation::INDEX_ACTIVE) replayInfo = infoSystem->GetActiveReplayInformation();
-	else replayInfo = replayInfoManager->GetInformation(index);
+	ref_count_ptr<ReplayInformation> replayInfo = replayInfoManager->GetInformation(index);
 
 	if (replayInfo == nullptr)
 		script->RaiseError(ErrorUtility::GetErrorMessage(ErrorUtility::ERROR_OUTOFRANGE_INDEX));
@@ -1189,14 +1188,15 @@ gstd::value StgControlScript::Func_SaveReplay(gstd::script_machine* machine, int
 	if (replayInfoActive == nullptr)
 		script->RaiseError("The replay data is not found.");
 
-	int index = argv[0].as_int();
-	if (index <= 0)
+	std::wstring fname = argv[0].as_string();
+	replayInfoActive->SetFileName(fname);
+	if (fname.length() <= 0)
 		script->RaiseError("Invalid replay index.");
 
 	std::wstring userName = argv[1].as_string();
 	replayInfoActive->SetUserName(userName);
 
-	bool res = replayInfoActive->SaveToFile(infoMain->pathScript_, index);
+	bool res = replayInfoActive->SaveToFile(infoMain->pathScript_, fname);
 	return script->CreateBooleanValue(res);
 }
 
@@ -1454,6 +1454,18 @@ value StgControlScript::Func_ObjMenu_GetActionFlag(gstd::script_machine* machine
 		ret = obj->GetActionFlag();
 	}
 	return script->CreateBooleanValue(ret);
+}
+
+value StgControlScript::Func_ObjMenu_GetKeyboardInput(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+	int id = argv[0].as_int();
+	DxMenuObject* obj = script->GetObjectPointerAs<DxMenuObject>(id);
+	std::wstring ret;
+	if (obj) {
+		ret = obj->GetKeyboardInput();
+	}
+	return script->CreateStringValue(ret);
 }
 
 value StgControlScript::Func_ObjMenu_GetReturnValue(gstd::script_machine* machine, int argc, const value* argv) {

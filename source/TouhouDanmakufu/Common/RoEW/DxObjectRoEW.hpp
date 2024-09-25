@@ -128,6 +128,7 @@
 		float GetSliderIncr(unsigned int index) { return sliderIncr[index]; }
 		int GetOptionType(unsigned int index) { return (int)optionType[index]; }
 		bool GetActionFlag() { return flags.actionT; }
+		std::wstring GetKeyboardInput() { return keyboardInput; }
 
 		void SetParent(int _p) { parent = _p; }
 		void AddRelatedObject(int id) {

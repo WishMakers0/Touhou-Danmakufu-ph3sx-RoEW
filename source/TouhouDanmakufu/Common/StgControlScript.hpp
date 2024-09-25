@@ -182,13 +182,14 @@ public:
 	static gstd::value Func_SetSkipRate(gstd::script_machine* machine, int argc, const value* argv);
 	static gstd::value Func_SetStdFrameRate(gstd::script_machine* machine, int argc, const value* argv);
 	static gstd::value Func_ToggleSkipMode(gstd::script_machine* machine, int argc, const value* argv);
-
+	
 	static gstd::value Func_Config_SetVKeyMap(gstd::script_machine* machine, int argc, const value* argv);
+	/*
 	static gstd::value Func_Config_SetResIndex(gstd::script_machine* machine, int argc, const value* argv);
 	static gstd::value Func_Config_SetFullscreen(gstd::script_machine* machine, int argc, const value* argv);
 	static gstd::value Func_Config_SetVsync(gstd::script_machine* machine, int argc, const value* argv);
 	static gstd::value Func_Config_SetPseudoFs(gstd::script_machine* machine, int argc, const value* argv);
-
+	
 	static gstd::value Func_Config_GetVKeyMap(gstd::script_machine* machine, int argc, const value* argv);
 	static gstd::value Func_Config_GetResIndex(gstd::script_machine* machine, int argc, const value* argv);
 	static gstd::value Func_Config_GetFullscreen(gstd::script_machine* machine, int argc, const value* argv);
@@ -196,7 +197,7 @@ public:
 	static gstd::value Func_Config_GetPseudoFs(gstd::script_machine* machine, int argc, const value* argv);
 
 	static gstd::value Func_SaveConfigFile(gstd::script_machine* machine, int argc, const value* argv);
-
+	*/
 	static gstd::value Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const gstd::value* argv);
 	static gstd::value Func_ObjMenu_Regist(gstd::script_machine* machine, int argc, const gstd::value* argv);
 
@@ -214,6 +215,7 @@ public:
 	static gstd::value Func_ObjMenu_GetOptionType(gstd::script_machine* machine, int argc, const gstd::value* argv);
 	static gstd::value Func_ObjMenu_GetActionFlag(gstd::script_machine* machine, int argc, const gstd::value* argv);
 	static gstd::value Func_ObjMenu_GetReturnValue(gstd::script_machine* machine, int argc, const gstd::value* argv);
+	static gstd::value Func_ObjMenu_GetKeyboardInput(gstd::script_machine* machine, int argc, const gstd::value* argv);
 
 	static gstd::value Func_ForceCloseAllMenus(gstd::script_machine* machine, int argc, const gstd::value* argv);
 

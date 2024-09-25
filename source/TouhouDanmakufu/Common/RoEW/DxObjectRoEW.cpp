@@ -175,12 +175,12 @@ void DxMenuObject::OptionHandler() {
 	int16_t keys[8] = { KEY_LEFT, KEY_RIGHT, KEY_UP, KEY_DOWN,
 	KEY_SHOT, KEY_BOMB, KEY_USER1, KEY_USER2 };
 
-	/*
-	* if (optionType[optionIndex] == TYPE_KEYBOARD) {
+	
+	if (optionType[optionIndex] == TYPE_KEYBOARD) {
 		OptionHandler_Keyboard();
 		return;
 	}
-	*/
+	
 
 	// might want to consider some checking on value of optionType[optionIndex] using std::vector.at
 	
@@ -249,24 +249,55 @@ void DxMenuObject::OptionHandler() {
 }
 
 void DxMenuObject::OptionHandler_Keyboard() {
-	/*
 
 	int16_t letterKeys[26] =	{DIK_A, DIK_B, DIK_C, DIK_D, DIK_E, DIK_F, DIK_G, DIK_H, DIK_I, DIK_J,
 								 DIK_K, DIK_L, DIK_M, DIK_N, DIK_O, DIK_P, DIK_Q, DIK_R, DIK_S, DIK_T,
 								 DIK_U, DIK_V, DIK_W, DIK_X, DIK_Y, DIK_Z};
 	int16_t numberKeys[10] =	{DIK_0, DIK_1, DIK_2, DIK_3, DIK_4, DIK_5, DIK_6, DIK_7, DIK_8, DIK_9};
-	std::wstring newchar = L"";
+	wchar_t charCode = 0x00;
+	const uint64_t ONE = 1;
 
-
-	for (int i = 0; i < 26; i++) {
-		uint64_t power_2_i = 1 << i;
-		if ( (input->GetKeyState(letterKeys[i]) == KEY_PUSH) && (input->GetKeyState(letterKeys[i]) == KEY_HOLD) ) {
-			if (keyboardButtonValue & power_2_i == 0) { //bitwise arithmetic still needed to check if it was pressed last frame
-				newchar = L"\x00" + std::to_wstring(i + 0x61);
+	for (uint64_t i = 0; i < 26; i++) {
+		uint64_t power_2_i = ONE << i;
+		if ( (input->GetKeyState(letterKeys[i]) == KEY_PUSH) || (input->GetKeyState(letterKeys[i]) == KEY_HOLD) ) {
+			if ((keyboardButtonValue & power_2_i) == 0) { //bitwise arithmetic still needed to check if it was pressed last frame
+				charCode = i + L'a';
+				if ((input->GetKeyState(DIK_LSHIFT) == KEY_PUSH) || (input->GetKeyState(DIK_LSHIFT) == KEY_HOLD) || (input->GetKeyState(DIK_RSHIFT) == KEY_PUSH) || (input->GetKeyState(DIK_RSHIFT) == KEY_HOLD)) {
+					charCode = i + L'A';
+				}
+				keyboardButtonValue = (keyboardButtonValue | power_2_i);
 			}
 		}
-	}*/
+		else {
+			keyboardButtonValue = (keyboardButtonValue & ~(power_2_i));
+		}
+	}
 
+	for (uint64_t i = 0; i < 10; i++) {
+		uint64_t power_2_i = ONE << (i+26);
+		if ((input->GetKeyState(numberKeys[i]) == KEY_PUSH) || (input->GetKeyState(numberKeys[i]) == KEY_HOLD)) {
+			if ((keyboardButtonValue & power_2_i) == 0) { //bitwise arithmetic still needed to check if it was pressed last frame
+				charCode = i + L'0';
+				keyboardButtonValue = (keyboardButtonValue | power_2_i);
+			}
+		}
+		else {
+			keyboardButtonValue = (keyboardButtonValue & ~(power_2_i));
+		}
+	}
+
+	if (input->GetKeyState(DIK_BACKSPACE) == KEY_PUSH) {
+		if (keyboardInput.length() > 0) {
+			keyboardInput.pop_back();
+		}
+	}
+	else if (input->GetKeyState(DIK_RETURN) == KEY_PUSH) {
+		flags.actionT = true;
+	}
+	else {
+		std::wstring newChar(1, charCode);
+		keyboardInput = keyboardInput + newChar;
+	}
 }
 
 // DxMenuObjectManger
