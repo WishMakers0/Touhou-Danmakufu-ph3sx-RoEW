@@ -310,3 +310,5 @@ DxMenuObjectManager::DxMenuObjectManager() {
 
 // No need for this!  Handled in DxScript!
 //void DxMenuObjectManager::ForceCloseAllMenus() {}
+
+// animation objects here?

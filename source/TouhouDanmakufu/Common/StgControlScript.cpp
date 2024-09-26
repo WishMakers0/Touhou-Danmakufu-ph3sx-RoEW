@@ -133,7 +133,7 @@ static const std::vector<function> stgControlFunction = {
 	{ "SetSkipRate", StgControlScript::Func_SetSkipRate, 1 },
 	{ "SetStdFrameRate", StgControlScript::Func_SetStdFrameRate, 1 },
 	{ "ToggleSkipMode", StgControlScript::Func_ToggleSkipMode, 1 },
-	/*
+	
 	{ "Config_SetVkeyMap", StgControlScript::Func_Config_SetVKeyMap, 4 },
 	{ "Config_SetResIndex", StgControlScript::Func_Config_SetResIndex, 1 },
 	{ "Config_SetFullscreen", StgControlScript::Func_Config_SetFullscreen, 1 },
@@ -147,7 +147,6 @@ static const std::vector<function> stgControlFunction = {
 	{ "Config_GetPseudoFs", StgControlScript::Func_Config_GetPseudoFs, 0 },
 
 	{ "SaveConfigFile", StgControlScript::Func_SaveConfigFile, 0 },
-	*/
 
 	{ "ObjMenu_Create", StgControlScript::Func_ObjMenu_Create, 0 },
 	{ "ObjMenu_Regist", StgControlScript::Func_ObjMenu_Regist, 1 },
@@ -1271,6 +1270,126 @@ value StgControlScript::Func_Config_SetVKeyMap(gstd::script_machine* machine, in
 	return value();
 }
 
+value StgControlScript::Func_Config_SetResIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	uint32_t resindex = argv[0].as_int();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	config->windowSizeIndex_ = resindex;
+
+	return value();
+}
+
+value StgControlScript::Func_Config_SetFullscreen(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	bool fs = argv[0].as_boolean();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	ScreenMode sm = SCREENMODE_WINDOW;
+	if (fs) {
+		sm = SCREENMODE_FULLSCREEN;
+	}
+	config->modeScreen_ = sm;
+
+	return value();
+}
+
+value StgControlScript::Func_Config_SetVsync(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	bool vs = argv[0].as_boolean();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	config->bVSync_ = vs;
+
+	return value();
+}
+
+value StgControlScript::Func_Config_SetPseudoFs(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	bool pfs = argv[0].as_boolean();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	config->bPseudoFullscreen_ = pfs;
+
+	return value();
+}
+
+value StgControlScript::Func_Config_GetVKeyMap(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	int16_t keycode = argv[0].as_int();
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	ref_count_ptr<VirtualKey> vkey = config->mapKey_[keycode];
+	int16_t key = vkey->GetKeyCode();
+	int16_t padId = vkey->GetPadIndex();
+	int16_t padButton = vkey->GetPadButton();
+	std::vector<int16_t> keyMap;
+	keyMap.push_back(key);
+	keyMap.push_back(padId);
+	keyMap.push_back(padButton);
+
+	return script->CreateIntArrayValue(keyMap);
+}
+
+value StgControlScript::Func_Config_GetResIndex(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	int64_t resindex = config->windowSizeIndex_;
+
+	return script->CreateIntValue(resindex);
+}
+
+value StgControlScript::Func_Config_GetFullscreen(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	bool fs = false;
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	ScreenMode sm = config->modeScreen_;
+	if (sm == SCREENMODE_FULLSCREEN) {
+		fs = true;
+	}
+
+	return script->CreateBooleanValue(fs);
+}
+
+value StgControlScript::Func_Config_GetVsync(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	bool vs = config->bVSync_;
+
+	return script->CreateBooleanValue(vs);
+}
+
+value StgControlScript::Func_Config_GetPseudoFs(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	bool pfs = config->bPseudoFullscreen_;
+
+	return script->CreateBooleanValue(pfs);
+}
+
+value StgControlScript::Func_SaveConfigFile(gstd::script_machine* machine, int argc, const value* argv) {
+	StgControlScript* script = (StgControlScript*)machine->data;
+	script->CheckRunInMainThread();
+
+	DnhConfiguration* config = DnhConfiguration::GetInstance();
+	config->SaveConfigFile();
+
+	return value();
+}
 
 value StgControlScript::Func_ObjMenu_Create(gstd::script_machine* machine, int argc, const value* argv) {
 	StgControlScript* script = (StgControlScript*)machine->data;
