@@ -29,6 +29,43 @@
 			Description:
 				Turns on or off skip mode via script, instead of the hardcoded skip key functionality.
 
+--------------------------------------------> [Config-Related Fxns] <---------------------------------------------
+
+	SaveConfigFile
+			Arguments:
+				N/A
+			Returns:
+				N/A
+			Description:
+				Saves the current state of the config file in memory to disk (config.dat).
+
+	Config_SetVKeyMap
+			Arguments:
+				1) virtual key code (KEY_LEFT, KEY_SHOT, KEY_USER1, etc.)
+				2) key code (KEY_A, KEY_RETURN, KEY_0, etc.)
+				3) gamepad button code (oh shit I'll have to make em)
+			Returns:
+				N/A
+			Description:
+				Sets the map of a given in-game action to a keyboard code and a gamepad button code.
+				(as of 9/26 realized I forgot to include gamepad index... will have to fix that)
+
+	Config_GetVKeyMap
+			Arguments:
+				1) virtual key code
+			Returns:
+				int array - [key code, gamepad ID, gamepad button code]
+			Description:
+				Gets the map of the given in-game action.
+
+	Config_SetResIndex(int index)
+	Config_GetResIndex() - returns int
+	Config_SetFullscreen(bool b)
+	Config_GetFullscreen() - returns bool
+	Config_SetPseudoFs(bool b)
+	Config_GetPseudoFs() - returns bool
+	Config_SetVsync(bool b)
+	Config_GetVsync() - returns bool
 
 ----------------------------------------------> [Menu Object Fxns] <----------------------------------------------
 
